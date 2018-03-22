@@ -1,0 +1,12 @@
+D:\itransition\курсовой\EssayStorage\EssayStorage\bin\Debug\netcoreapp2.0\EssayStorage.deps.json
+D:\itransition\курсовой\EssayStorage\EssayStorage\bin\Debug\netcoreapp2.0\EssayStorage.runtimeconfig.json
+D:\itransition\курсовой\EssayStorage\EssayStorage\bin\Debug\netcoreapp2.0\EssayStorage.runtimeconfig.dev.json
+D:\itransition\курсовой\EssayStorage\EssayStorage\bin\Debug\netcoreapp2.0\EssayStorage.dll
+D:\itransition\курсовой\EssayStorage\EssayStorage\obj\Debug\netcoreapp2.0\EssayStorage.csprojResolveAssemblyReference.cache
+D:\itransition\курсовой\EssayStorage\EssayStorage\obj\Debug\netcoreapp2.0\EssayStorage.csproj.CoreCompileInputs.cache
+D:\itransition\курсовой\EssayStorage\EssayStorage\obj\Debug\netcoreapp2.0\EssayStorage.AssemblyInfoInputs.cache
+D:\itransition\курсовой\EssayStorage\EssayStorage\obj\Debug\netcoreapp2.0\EssayStorage.AssemblyInfo.cs
+D:\itransition\курсовой\EssayStorage\EssayStorage\bin\Debug\netcoreapp2.0\EssayStorage.pdb
+D:\itransition\курсовой\EssayStorage\EssayStorage\obj\Debug\netcoreapp2.0\UserSecretsAssemblyInfo.cs
+D:\itransition\курсовой\EssayStorage\EssayStorage\obj\Debug\netcoreapp2.0\EssayStorage.dll
+D:\itransition\курсовой\EssayStorage\EssayStorage\obj\Debug\netcoreapp2.0\EssayStorage.pdb
