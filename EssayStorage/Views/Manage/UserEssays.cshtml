@@ -1,0 +1,49 @@
+﻿@using EssayStorage.Models.Database
+@{
+    ViewData["Title"] = "User essays";
+    ViewData.AddActivePage(ManageNavPages.UserEssays);
+}
+
+<form action="../Editor/NewEssay">
+    <button type="submit" class="btn btn-success btn-lg">+ Create essay</button>
+</form>
+<center><h3>Your essays</h3></center>
+<div class="row">
+    <div class="table-responsive">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Specialization</th>
+                    <th>Average rate</th>
+                    <th>Creation time</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (Essay essay in (List<Essay>)ViewData["essays"]) {
+                <tr>
+                    <td style="vertical-align: middle;">@essay.Name</td>
+                    <td style="vertical-align: middle;">@essay.Description</td>
+                    <td style="vertical-align: middle;">@essay.Specialization</td>
+                    <td style="vertical-align: middle;">@essay.AverageRating</td>
+                    <td style="vertical-align: middle;">@essay.CreationTime</td>
+                    <td style="vertical-align: middle;">
+                        <center>
+                            <form method="post" action="../Editor/EditEssay">
+                                <input name="Id" value="gag" style="display:none;" />
+                                <button class="btn">Edit</button>
+                            </form>
+                        </center>
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}

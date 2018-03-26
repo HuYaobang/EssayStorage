@@ -1,0 +1,48 @@
+﻿@model CreateEssayViewModel
+
+<meta charset="utf-8" />
+<link rel="stylesheet" href="/node_modules/editor.md/examples/css/style.css" />
+<link rel="stylesheet" href="/node_modules/editor.md/css/editormd.css" />
+<link rel="shortcut icon" href="https://pandao.github.io/editor.md/favicon.ico" type="image/x-icon" />
+
+<div id="layout" style="margin-top: 55px;">
+    <form method="post" action="../Editor/SaveEssay">
+        <div asp-validation-summary="All" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="Name"></label>
+            <input asp-for="Name" class="form-control" value="@Model.Name"/>
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Description"></label>
+            <input asp-for="Description" class="form-control" />
+            <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Specialization"></label>
+            <input asp-for="Specialization" class="form-control" />
+            <span asp-validation-for="Specialization" class="text-danger"></span>
+        </div>
+
+        <div id="test-editormd">
+            <textarea asp-for="Content" style="display:none;">
+        </textarea>
+        </div>
+        <button type="submit" class="btn btn-info">Send</button>
+    </form>
+</div>
+
+<script src="/node_modules/editor.md/examples/js/jquery.min.js"></script>
+<script src="/node_modules/editor.md/editormd.js"></script>
+<script type="text/javascript">
+    var testEditor;
+
+    $(function () {
+        testEditor = editormd("test-editormd", {
+            width: "100%",
+            height: 640,
+            syncScrolling: "single",
+            path: "/node_modules/editor.md/lib/"
+        });
+    });
+</script>

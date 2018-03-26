@@ -11,6 +11,8 @@ using Microsoft.Extensions.DependencyInjection;
 using EssayStorage.Data;
 using EssayStorage.Models;
 using EssayStorage.Services;
+using Microsoft.Extensions.FileProviders;
+using System.IO;
 
 namespace EssayStorage
 {
@@ -28,10 +30,10 @@ namespace EssayStorage
         {
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-            
+
             services.AddIdentity<ApplicationUser, IdentityRole>()
-            .AddEntityFrameworkStores<ApplicationDbContext>()
-            .AddDefaultTokenProviders();
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultTokenProviders();
             services.AddAuthentication().AddTwitter(twitterOptions =>
             {
                 twitterOptions.ConsumerKey = Configuration["Authentication:Twitter:ConsumerKey"];
@@ -63,6 +65,15 @@ namespace EssayStorage
             }
 
             app.UseStaticFiles();
+
+            app.UseFileServer(new FileServerOptions()
+            {
+                FileProvider = new PhysicalFileProvider(
+                    Path.Combine(env.ContentRootPath, "node_modules")
+                ),
+                RequestPath = "/node_modules",
+                EnableDirectoryBrowsing = false
+            });
 
             app.UseAuthentication();
 
