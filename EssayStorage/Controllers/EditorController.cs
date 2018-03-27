@@ -29,32 +29,44 @@ namespace EssayStorage.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> EditEssay(string Id)
+        public IActionResult EditEssay(string Id)
         {
             int id;
             if (!int.TryParse(Id, out id))
             {
                 return View();
             }
+
+            Essay essay = db.Essays.Where(e => e.Id == id).First();
             var model = new CreateEssayViewModel
             {
-                Content = "123",
-                Description = "123",
-                Name = "123",
-                Specialization = "123"
+                Content = essay.Content,
+                Description = essay.Description,
+                Name = essay.Name,
+                Specialization = essay.Specialization,
+                Id = essay.Id
             };
-           /* var essay = new Essay
-            {
-                Id = id,
-                Content = "big dick",
-                Description = "228",
-                Name = "23",
-                Specialization = "33"
-            };
-            ViewData.Add("essay", "123");*/
+           
             return View(model);
+            
         }
         
+        [HttpPost]
+        public IActionResult UpdateEssay(CreateEssayViewModel model)
+        {
+            if(ModelState.IsValid)
+            {
+                Essay essay = db.Essays.Where(e => e.Id == model.Id).First();
+                essay.Name = model.Name; 
+                essay.Description = model.Description;
+                essay.Specialization = model.Specialization;
+                essay.Content = model.Content;
+                db.Update(essay);
+                db.SaveChanges();
+            }
+            return View("SaveEssay");
+
+        }
         [HttpPost]
         public async Task<IActionResult> SaveEssay(CreateEssayViewModel model)
         {

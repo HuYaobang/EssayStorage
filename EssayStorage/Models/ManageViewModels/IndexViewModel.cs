@@ -18,5 +18,7 @@ namespace EssayStorage.Models.ManageViewModels
         public string StatusMessage { get; set; }
 
         public string UserInfo { get; set; }
+
+        public string PicturePath { get; set; }
     }
 }

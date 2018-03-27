@@ -4,11 +4,21 @@
     ViewData.AddActivePage(ManageNavPages.Index);
 }
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<link href="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/css/bootstrap-editable.css" rel="stylesheet" />
+<script src="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
 
-<h4>@ViewData["Title"]</h4>
 @Html.Partial("_StatusMessage", Model.StatusMessage)
 <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-2">
+        <div style="width:150px;margin:auto;height:150px; margin-top:40px">
+            <img src="@Model.PicturePath" class="img-responsive img-thumbnail" style="position:center" />
+            <form method="post" asp-controller="Manage" asp-action="UploadImage" enctype="multipart/form-data">
+                <input type="file" name="file" style="width:240px;margin-top:10px" />
+                <input type="submit" class="btn-info" value="Load" />
+            </form>
+        </div>
+    </div>
+    <div class="col-md-offset-2 col-md-6">
         <form method="post">
             <div asp-validation-summary="All" class="text-danger"></div>
             <div class="form-group">
@@ -16,17 +26,17 @@
                 <input asp-for="Email" class="form-control" disabled />
             </div>
             @if (Model.IsEmailConfirmed)
-             {
+            {
                 <div class="form-group">
                     <label>confirmed</label>
                 </div>
-             }
-             else
-             {
-                 <div class="form-group">
+            }
+            else
+            {
+                <div class="form-group">
                     <label> not confirmed</label>
-                 </div>
-             }
+                </div>
+            }
             <div class="form-group">
                 <label asp-for="Username"></label>
                 <input asp-for="Username" class="form-control" />
@@ -34,17 +44,14 @@
 
             <button type="submit" class="btn btn-default">Save</button>
         </form>
-        <a href="#" id="comments" data-type="textarea" data-pk="1">awesome comment!</a>
+        <a id="comments" href="#">darova</a>
         <script>
-$(function(){
-    $('#comments').editable({
-        url: '/Manage/Index',
-        title: 'Enter comments',
-        rows: 10
-    });
-});
+            $(function () {
+                $('#comments').editable();
+            });
         </script>
     </div>
+
 </div>
 
 @section Scripts {

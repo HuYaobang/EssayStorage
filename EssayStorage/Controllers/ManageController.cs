@@ -1,20 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Encodings.Web;
-using System.Threading.Tasks;
+﻿using EssayStorage.Data;
+using EssayStorage.Models;
+using EssayStorage.Models.Database;
+using EssayStorage.Models.ManageViewModels;
+using EssayStorage.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-using EssayStorage.Models;
-using EssayStorage.Models.ManageViewModels;
-using EssayStorage.Services;
-using EssayStorage.Models.Database;
-using EssayStorage.Data;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text.Encodings.Web;
+using System.Threading.Tasks;
 
 namespace EssayStorage.Controllers
 {
@@ -28,7 +29,7 @@ namespace EssayStorage.Controllers
         private readonly ILogger _logger;
         private readonly UrlEncoder _urlEncoder;
         private ApplicationDbContext _db;
-
+        IHostingEnvironment _appEnvironment; 
         private const string AuthenticatorUriFormat = "otpauth://totp/{0}:{1}?secret={2}&issuer={0}&digits=6";
         private const string RecoveryCodesKey = nameof(RecoveryCodesKey);
 
@@ -38,7 +39,8 @@ namespace EssayStorage.Controllers
           IEmailSender emailSender,
           ILogger<ManageController> logger,
           UrlEncoder urlEncoder,
-          ApplicationDbContext db)
+          ApplicationDbContext db,
+          IHostingEnvironment hostingEnvironment)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -46,6 +48,7 @@ namespace EssayStorage.Controllers
             _logger = logger;
             _urlEncoder = urlEncoder;
             _db = db;
+            _appEnvironment = hostingEnvironment;
         }
 
         [TempData]
@@ -65,7 +68,8 @@ namespace EssayStorage.Controllers
                 Username = user.UserName,
                 Email = user.Email,
                 IsEmailConfirmed = user.EmailConfirmed,
-                StatusMessage = StatusMessage
+                StatusMessage = StatusMessage,
+                PicturePath = user.PicturePath
             };
 
             return View(model);
@@ -313,25 +317,39 @@ namespace EssayStorage.Controllers
         {
             var user = await _userManager.GetUserAsync(User);
             List<Essay> essays = _db.Essays.Where((e) => e.UserId == user.Id).ToList();
-            /*user.Essays.Add(new Essay
-            {
-                Name = "Test essay",
-                AverageRating = 0,
-                Content = "#gadggdsgsdg",
-                CreationTime = DateTime.Now,
-                Description = "test desc",
-                Specialization = "228 spec",
-                TotalRating = 0,
-                VotersCount = 0,
-                UserId = user.Id
-            });
-            await _userManager.UpdateAsync(user);*/
-
             ViewData.Add("essays", essays);
             
             return View();
         }
 
+        [HttpPost]
+        public async Task<IActionResult> UploadImage(IFormFile file)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (file != null)
+            {
+                string path = "/images/avatars/" + user.UserName+".png";
+                Console.WriteLine("___________\n" + _appEnvironment.WebRootPath + path + "\n____________________");
+                using (var filestream = new FileStream(_appEnvironment.WebRootPath + path, FileMode.Create))
+                {
+                    await file.CopyToAsync(filestream);
+                }
+                //_db.Users.Where(ussr => ussr.Id == _userManager.GetUserId(User)).First();
+                user.PicturePath = path;
+                _db.Users.Update(user);
+                await _db.SaveChangesAsync();
+                
+            }
+            IndexViewModel model = new IndexViewModel
+            {
+                Username = user.UserName,
+                Email = user.Email,
+                IsEmailConfirmed = user.EmailConfirmed,
+                StatusMessage = StatusMessage,
+                PicturePath = user.PicturePath
+            };
+            return RedirectToAction("Index", model);
+        }
 
         #region Helpers
 

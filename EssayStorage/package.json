@@ -4,6 +4,7 @@
   "private": true,
   "devDependencies": {
     "bootstrap": "4.0.0",
-    "editor.md": "1.5.0"
+    "editor.md": "1.5.0",
+    "bootstrap-editable": "1.0.1"
   }
 }

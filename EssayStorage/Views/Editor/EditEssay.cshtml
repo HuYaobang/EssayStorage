@@ -6,11 +6,11 @@
 <link rel="shortcut icon" href="https://pandao.github.io/editor.md/favicon.ico" type="image/x-icon" />
 
 <div id="layout" style="margin-top: 55px;">
-    <form method="post" action="../Editor/SaveEssay">
+    <form method="post" action="../Editor/UpdateEssay">
         <div asp-validation-summary="All" class="text-danger"></div>
         <div class="form-group">
             <label asp-for="Name"></label>
-            <input asp-for="Name" class="form-control" value="@Model.Name"/>
+            <input asp-for="Name" class="form-control" />
             <span asp-validation-for="Name" class="text-danger"></span>
         </div>
         <div class="form-group">
@@ -23,7 +23,7 @@
             <input asp-for="Specialization" class="form-control" />
             <span asp-validation-for="Specialization" class="text-danger"></span>
         </div>
-
+        <input asp-for="Id" class="form-control" style="display:none;"/>
         <div id="test-editormd">
             <textarea asp-for="Content" style="display:none;">
         </textarea>

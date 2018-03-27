@@ -118,7 +118,7 @@ namespace EssayStorage.Controllers
                     IsAdmin = false,
                     UserInfo = "You can write about yourself here",
                     UserName = model.Name,
-                    PicturePath = "wwwroot/images/banner1.svg"
+                    PicturePath = "/images/defaultavatar.png"
                 };
                 var result = await _userManager.CreateAsync(user, model.Password);
                 
@@ -225,7 +225,7 @@ namespace EssayStorage.Controllers
                 {
                     throw new ApplicationException("Error loading external login information during confirmation.");
                 }
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email};
                 var result = await _userManager.CreateAsync(user);
                 if (result.Succeeded)
                 {

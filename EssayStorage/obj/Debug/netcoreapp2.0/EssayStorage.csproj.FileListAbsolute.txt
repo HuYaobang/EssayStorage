@@ -7,7 +7,6 @@ D:\itransition\курсовой\EssayStorage\EssayStorage\obj\Debug\netcoreapp2.
 D:\itransition\курсовой\EssayStorage\EssayStorage\obj\Debug\netcoreapp2.0\EssayStorage.AssemblyInfoInputs.cache
 D:\itransition\курсовой\EssayStorage\EssayStorage\obj\Debug\netcoreapp2.0\EssayStorage.AssemblyInfo.cs
 D:\itransition\курсовой\EssayStorage\EssayStorage\bin\Debug\netcoreapp2.0\EssayStorage.pdb
-D:\itransition\курсовой\EssayStorage\EssayStorage\obj\Debug\netcoreapp2.0\UserSecretsAssemblyInfo.cs
 D:\itransition\курсовой\EssayStorage\EssayStorage\obj\Debug\netcoreapp2.0\EssayStorage.dll
 D:\itransition\курсовой\EssayStorage\EssayStorage\obj\Debug\netcoreapp2.0\EssayStorage.pdb
 C:\Users\Rodion\Desktop\itra\projects\EssayStorage\EssayStorage\bin\Debug\netcoreapp2.0\EssayStorage.deps.json
@@ -22,3 +21,4 @@ C:\Users\Rodion\Desktop\itra\projects\EssayStorage\EssayStorage\obj\Debug\netcor
 C:\Users\Rodion\Desktop\itra\projects\EssayStorage\EssayStorage\obj\Debug\netcoreapp2.0\EssayStorage.AssemblyInfo.cs
 C:\Users\Rodion\Desktop\itra\projects\EssayStorage\EssayStorage\obj\Debug\netcoreapp2.0\EssayStorage.dll
 C:\Users\Rodion\Desktop\itra\projects\EssayStorage\EssayStorage\obj\Debug\netcoreapp2.0\EssayStorage.pdb
+D:\itransition\курсовой\EssayStorage\EssayStorage\obj\Debug\netcoreapp2.0\UserSecretsAssemblyInfo.cs
