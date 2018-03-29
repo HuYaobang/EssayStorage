@@ -3,22 +3,23 @@
     ViewData["Title"] = "Profile";
     ViewData.AddActivePage(ManageNavPages.Index);
 }
-<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
 <link href="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/css/bootstrap-editable.css" rel="stylesheet" />
 <script src="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
 
+
 @Html.Partial("_StatusMessage", Model.StatusMessage)
 <div class="row">
-    <div class="col-md-2">
-        <div style="width:150px;margin:auto;height:150px; margin-top:40px">
-            <img src="@Model.PicturePath" class="img-responsive img-thumbnail" style="position:center" />
+    <div class="col-md-4">
+        <center>
+            <img style="height: 240px;" src="@Model.PicturePath" class="img-responsive img-thumbnail" />
             <form method="post" asp-controller="Manage" asp-action="UploadImage" enctype="multipart/form-data">
-                <input type="file" name="file" style="width:240px;margin-top:10px" />
-                <input type="submit" class="btn-info" value="Load" />
+                <input type="file" class="btn btn-info btn-sm" name="file" style="width:240px;margin-top:10px" />
+                <input style="margin-top: 5px; width: 130px;" type="submit" class="btn btn-info" value="Load" />
             </form>
-        </div>
+        </center>
     </div>
-    <div class="col-md-offset-2 col-md-6">
+    <div class="col-md-6">
         <form method="post">
             <div asp-validation-summary="All" class="text-danger"></div>
             <div class="form-group">
@@ -44,10 +45,16 @@
 
             <button type="submit" class="btn btn-default">Save</button>
         </form>
-        <a id="comments" href="#">darova</a>
+        <a href="#" id="username">darova</a>
         <script>
-            $(function () {
-                $('#comments').editable();
+            $('#username').editable({
+                type: 'text',
+                pk: 228,
+                url: '/Manage/UpdateName',
+                title: 'Enter username',
+                success: function (isSuccessive) {
+                    alert(isSuccessive);
+                }
             });
         </script>
     </div>

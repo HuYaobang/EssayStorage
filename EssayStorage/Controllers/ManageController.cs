@@ -76,6 +76,18 @@ namespace EssayStorage.Controllers
         }
 
         [HttpPost]
+        public async Task<bool> UpdateName(string value)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            user.UserName = value;
+            _db.Users.Update(user);
+            if (await _db.SaveChangesAsync() > 0)
+                return true;
+            else
+                return false;
+        }
+
+        [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Index(IndexViewModel model)
         {

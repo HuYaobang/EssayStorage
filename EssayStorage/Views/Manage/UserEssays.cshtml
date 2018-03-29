@@ -5,7 +5,7 @@
 }
 
 <form action="../Editor/NewEssay">
-    <button type="submit" class="btn btn-success btn-lg">+ Create essay</button>
+    <button style="margin-top: 10px;" type="submit" class="btn btn-success btn-lg">+ Create essay</button>
 </form>
 <center><h3>Your essays</h3></center>
 <div class="row">
@@ -18,13 +18,12 @@
                     <th>Specialization</th>
                     <th>Average rate</th>
                     <th>Creation time</th>
-                    <th></th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (Essay essay in (List<Essay>)ViewData["essays"]) {
                 <tr>
-                    <td style="vertical-align: middle;">@essay.Name</td>
+                    <td style="vertical-align: middle;">@Html.ActionLink(essay.Name, "essay","display", new { essayId = essay.Id })</td>
                     <td style="vertical-align: middle;">@essay.Description</td>
                     <td style="vertical-align: middle;">@essay.Specialization</td>
                     <td style="vertical-align: middle;">@essay.AverageRating</td>

@@ -5167,9 +5167,6 @@
         "runtime": {
           "lib/netstandard1.3/Microsoft.WindowsAzure.Storage.dll": {}
         }
-      },
-      "x-editable/1.5.3": {
-        "type": "package"
       }
     }
   },
@@ -6231,7 +6228,7 @@
       ]
     },
     "Microsoft.CodeAnalysis.Analyzers/1.1.0": {
-      "sha512": "HS3iRWZKcUw/8eZ/08GXKY2Bn7xNzQPzf8gRPHGSowX7u7XXu9i9YEaBeBNKUXWfI7qjvT2zXtLUvbN0hds8vg==",
+      "sha512": "Sk2aXimz/ZjH2YyAzqeWXgUePjdzdry93JDW+QBwJ5SJLvVr3gbtaXQN6cHdJUTu87aYV5FbtUV4Gz5x0uXR4Q==",
       "type": "package",
       "path": "microsoft.codeanalysis.analyzers/1.1.0",
       "files": [
@@ -7079,7 +7076,7 @@
       ]
     },
     "Microsoft.Extensions.PlatformAbstractions/1.1.0": {
-      "sha512": "Cw5mCnhOtgc23U1q13Pb0JTyVdcAeglKqt7PNFE+z6qVz97Ph/W3NpJluIBTjMvfmC3LWg/RI0vWCgwV2aNLbw==",
+      "sha512": "H6ZsQzxYw/6k2DfEQRXdC+vQ6obd6Uba3uGJrnJ2vG4PRXjQZ7seB13JdCfE72abp8E6Fk3gGgDzfJiLZi5ZpQ==",
       "type": "package",
       "path": "microsoft.extensions.platformabstractions/1.1.0",
       "files": [
@@ -8248,7 +8245,7 @@
       ]
     },
     "runtime.debian.8-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.0": {
-      "sha512": "VnNh+cKoLNa4sT5bapULClrR3U0K2zE4J4Kvf4UuRjfnPmGCr8Xv0Fsm7UwVgUB/0zAOG7iaS8IVbNRDZ4AlEA==",
+      "sha512": "oI8t45qsRtr3i2XbjcY7D7S7N+z36uxipJXRHgSwXUPsV6S68iw6ttxLI08XpoxDpr0v0Aw6FO6gSFEA2bLQNg==",
       "type": "package",
       "path": "runtime.debian.8-x64.runtime.native.system.security.cryptography.openssl/4.3.0",
       "files": [
@@ -8260,7 +8257,7 @@
       ]
     },
     "runtime.fedora.23-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.0": {
-      "sha512": "BZNAXHJ1FmymxrGik8tfeRkX1puxHWd35gFozFXxxu7u4GhClsrvoGqmENN0jxVKfUb9jXreEfzRWoO2wsof9g==",
+      "sha512": "KOnVeJzXaCcnEK1f7BBUp+OceDB8HhBB4U5kzn11CW+83rVbRZW1/aZC/mpnihyYdyDAakjMtKYEbzdjyafM9w==",
       "type": "package",
       "path": "runtime.fedora.23-x64.runtime.native.system.security.cryptography.openssl/4.3.0",
       "files": [
@@ -8272,7 +8269,7 @@
       ]
     },
     "runtime.fedora.24-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.0": {
-      "sha512": "4eelN/A85Q1F01cwsW66gYEeFTKHEoSj+6Zg7LL4IukYZKiVxW05vCHs+IwhriFfD/2VLeZPZU7Nt/en4PzDfg==",
+      "sha512": "hKJ5lu6O0d7pBubETwgWig1wSFsP2Z0QC/dQPB+u9Mbu9Xv0TCfywghLadZtMJp/SvLu73ePfsqTtuhKbsrj9g==",
       "type": "package",
       "path": "runtime.fedora.24-x64.runtime.native.system.security.cryptography.openssl/4.3.0",
       "files": [
@@ -8357,7 +8354,7 @@
       ]
     },
     "runtime.native.System.Security.Cryptography.OpenSsl/4.3.0": {
-      "sha512": "d1WqJwkAdXgUsxFbX2zwKizer5VVwgFZzv2aEdg3wuf4l5eCpyOotyUdKuI6wOBKnCby8idXIt2qQaStTVQhnA==",
+      "sha512": "NS1U+700m4KFRHR5o4vo9DSlTmlCKu/u7dtE5sUHVIPB+xpXxYQvgBgA6wEIeCz6Yfn0Z52/72WYsToCEPJnrw==",
       "type": "package",
       "path": "runtime.native.system.security.cryptography.openssl/4.3.0",
       "files": [
@@ -8369,7 +8366,7 @@
       ]
     },
     "runtime.opensuse.13.2-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.0": {
-      "sha512": "nhmywEEXjU3enfSn4r5JT0/DD8bo6aNe/v77IhySxsKwdQ8gmB5q4r4BL11VzfoCxDmEkp/PDoQtxbPyUX0QWw==",
+      "sha512": "NWvrjHyXVh4E1KcvkvWoQ5mRTD3rDr3rMdawD8+jqIZPPkK2n2Xuk7LBOzDHpxGnUDtYJ5Idwio93mqqJ2V3Xw==",
       "type": "package",
       "path": "runtime.opensuse.13.2-x64.runtime.native.system.security.cryptography.openssl/4.3.0",
       "files": [
@@ -8381,7 +8378,7 @@
       ]
     },
     "runtime.opensuse.42.1-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.0": {
-      "sha512": "V/LUaATAMKzAORlVI1j/L4T/7XTrQBH0Noe0JHMGAGocBiKoAIHZQCXJSQ9pDTPV78pkpOgigByjMJNn6vi2xQ==",
+      "sha512": "uJyyGatYfF1/Io0047tYhrRwinyzuhCel7ioF8kmLE2dDkJSiBNevt9IxRkkBVU/6zq4+/Zg3RSW/0DE9dw/fA==",
       "type": "package",
       "path": "runtime.opensuse.42.1-x64.runtime.native.system.security.cryptography.openssl/4.3.0",
       "files": [
@@ -8405,7 +8402,7 @@
       ]
     },
     "runtime.osx.10.10-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.0": {
-      "sha512": "u88R1DtWBw7Bs9/s7m8JSuXw4f6imW6YOPc+eOCbzfZfcTzioIR29RLCChJpWOdYFjW/4qrvfvplDa7OUdu0jg==",
+      "sha512": "1vnwCHoALODJBYAOtsidMQ0m1wtnT1CbhsouxjLjz7QH8shPJdzM7PsZjJOLY07RRv9FDXfVpRL7PRpU+FhOyw==",
       "type": "package",
       "path": "runtime.osx.10.10-x64.runtime.native.system.security.cryptography.openssl/4.3.0",
       "files": [
@@ -8417,7 +8414,7 @@
       ]
     },
     "runtime.rhel.7-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.0": {
-      "sha512": "u841/e8SDAWO6udjY53AaBYtb7DT15cb0KSxvtAByF6BxKBTllcVxqMtUI4FUV37Dn1loriORbAw0bRGx0C6sg==",
+      "sha512": "rbYQ7ZTtZu3bl8xXOgwNTHFTCgoDi5PhhrfmxFnWPj/b0oidNck4BMtCqqMIYkVbd12aFlywUii/BvQ6Weoh2g==",
       "type": "package",
       "path": "runtime.rhel.7-x64.runtime.native.system.security.cryptography.openssl/4.3.0",
       "files": [
@@ -8429,7 +8426,7 @@
       ]
     },
     "runtime.ubuntu.14.04-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.0": {
-      "sha512": "VYLz++vq8wc67je2O08GehULahmMadrGzwnjfDtO/EutZUhlDZSiXf+suJJw5zav4aFfrBDZTiDrHe5rGA3c+w==",
+      "sha512": "MeOdiez1XIz03tmu7CCRTgZG1bAEmjcP4ut28Mv2f8dNiLMI3GvYFSCRrvVqwDPG6msah8YJU2zJEv4PHSmtYw==",
       "type": "package",
       "path": "runtime.ubuntu.14.04-x64.runtime.native.system.security.cryptography.openssl/4.3.0",
       "files": [
@@ -8441,7 +8438,7 @@
       ]
     },
     "runtime.ubuntu.16.04-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.0": {
-      "sha512": "NM7R6jP7/jyxwI59FTF0zp3n8TCutkNKv+rX32IF5nQKOgSzrCyRNdBM6fcUmh8f/9SqCUvq5BG9m6mhoM/upA==",
+      "sha512": "n5poIjy76B7Ux8gehXSoCHFhzFKRhrltVLyRVzAxcJTgQGnqFpgKrryE2fU3q+W8m0PwD/VJb+RGe0crCGfXBg==",
       "type": "package",
       "path": "runtime.ubuntu.16.04-x64.runtime.native.system.security.cryptography.openssl/4.3.0",
       "files": [
@@ -8453,7 +8450,7 @@
       ]
     },
     "runtime.ubuntu.16.10-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.0": {
-      "sha512": "zgiT+Gt9tFmEqccoNKKTRkoClTAKtRc0Trbyzcoai2cCWP3y2iQexi0XMIWfqKuHEQn6IZjtt7GnMB3wlZKBrA==",
+      "sha512": "c8KcA3tKHosxZscAYMNIsdaiQRSXS9JDKhJN8W3oayrs7Q8gr4bQ1GWf1Iauqk17bFiKQo6zoGaXHpiynmKykQ==",
       "type": "package",
       "path": "runtime.ubuntu.16.10-x64.runtime.native.system.security.cryptography.openssl/4.3.0",
       "files": [
@@ -8874,7 +8871,7 @@
       ]
     },
     "System.Collections.NonGeneric/4.3.0": {
-      "sha512": "2fkFrvjqxTJ0SQMNXL1zieMUJXX5a4Unx1arzu1vbV1ZMStkvFocJtVek/0OcUPtGHArBX9PoFkBXN6TvltDEA==",
+      "sha512": "FZIwzUWy0gTDVlxHxR/ZjfWAxZqOfI5mE7MHOLXRCdxqZpcYGBBxLzoIzOCIek54LsC7ETGkOXqS5BRmr/9tgg==",
       "type": "package",
       "path": "system.collections.nongeneric/4.3.0",
       "files": [
@@ -8911,7 +8908,7 @@
       ]
     },
     "System.Collections.Specialized/4.3.0": {
-      "sha512": "Epx8PoVZR0iuOnJJDzp7pWvdfMMOAvpUo95pC4ScH2mJuXkKA2Y4aR3cG9qt2klHgSons1WFh4kcGW7cSXvrxg==",
+      "sha512": "2x6F6ATDE7Dza1gn+r8OzlvmZhSofA1PY2fyGpdtoee9U45icpDBVsncWmdrz/F/ejhi5vIZZfyQNI1H7JKQ5A==",
       "type": "package",
       "path": "system.collections.specialized/4.3.0",
       "files": [
@@ -9090,7 +9087,7 @@
       ]
     },
     "System.ComponentModel.Primitives/4.3.0": {
-      "sha512": "X6vR6NzrGeT2hOAkuOnAKOeiTB4Sy5BxFfEhchtl731kSpg0cTovBrE/zsW+MwOfsSk3F/Ede7Ogobr8zX2doA==",
+      "sha512": "/PAW0zhLTfAg5mzKDwfiLY5lUf8d/ehmNHwtxBC1/SabgVkeu8Se4xfRM5E4paICBT7YiAFR/rU/5+9Nsh/SqA==",
       "type": "package",
       "path": "system.componentmodel.primitives/4.3.0",
       "files": [
@@ -9127,7 +9124,7 @@
       ]
     },
     "System.ComponentModel.TypeConverter/4.3.0": {
-      "sha512": "POM8/p+1pdtm8QmUhjrMklAre8sKZ0gBngmWEY0rM35PaQEfQkKe407vMboYhVMUqVfMNSXHU8K5mDlo+Wv4VQ==",
+      "sha512": "16pQ6P+EdhcXzPiEK4kbA953Fu0MNG2ovxTZU81/qsCd1zPRsKc3uif5NgvllCY598k6bI0KUyKW8fanlfaDQg==",
       "type": "package",
       "path": "system.componentmodel.typeconverter/4.3.0",
       "files": [
@@ -9405,7 +9402,7 @@
       ]
     },
     "System.Diagnostics.Contracts/4.3.0": {
-      "sha512": "/yMjEw/UcQHLoXy8HVwChCjd+LGLm0J3UCFhFTSQ8gXrwzcy8Qqz865uUdY7xdlhBfoXrChXZs60CYEZEYZAEg==",
+      "sha512": "eelRRbnm+OloiQvp9CXS0ixjNQldjjkHO4iIkR5XH2VIP8sUB/SIpa1TdUW6/+HDcQ+MlhP3pNa1u5SbzYuWGA==",
       "type": "package",
       "path": "system.diagnostics.contracts/4.3.0",
       "files": [
@@ -9594,7 +9591,7 @@
       ]
     },
     "System.Diagnostics.StackTrace/4.3.0": {
-      "sha512": "QIrNw+M3SDaJLlW25a8h+9ov1m3p+80sDox6Bs48URBVYKJOV5yRfU4ZbCv1neDKsJCyj5R2XlN6KAWYtBDyzg==",
+      "sha512": "BiHg0vgtd35/DM9jvtaC1eKRpWZxr0gcQd643ABG7GnvSlf5pOkY2uyd42mMOJoOmKvnpNj0F4tuoS1pacTwYw==",
       "type": "package",
       "path": "system.diagnostics.stacktrace/4.3.0",
       "files": [
@@ -9946,7 +9943,7 @@
       ]
     },
     "System.Globalization.Extensions/4.3.0": {
-      "sha512": "FhKmdR6MPG+pxow6wGtNAWdZh7noIOpdD5TwQ3CprzgIE1bBBoim0vbR1+AWsWjQmU7zXHgQo4TWSP6lCeiWcQ==",
+      "sha512": "Nd21G7DA0/u2HYiCXrlH4zJo47qoKUeytkPlhkg/biUcd4LPETX6/bBp2YOQ+FYY+ToZ0yPD07sPbVuhdEGS6g==",
       "type": "package",
       "path": "system.globalization.extensions/4.3.0",
       "files": [
@@ -10502,7 +10499,7 @@
       ]
     },
     "System.Net.Http/4.3.0": {
-      "sha512": "3eh4nyEvgriSKJ8sqUtvSIfO51Nrd9ukzjKsY0Zk+YPAGAdf5KTd0ccQB2aTxKiYao7VTwPvRWxxi7djbilyrw==",
+      "sha512": "sYg+FtILtRQuYWSIAuNOELwVuVsxVyJGWQyOnlAzhV4xvhyFnON1bAzYYC+jjRW8JREM45R0R5Dgi8MTC5sEwA==",
       "type": "package",
       "path": "system.net.http/4.3.0",
       "files": [
@@ -10582,7 +10579,7 @@
       ]
     },
     "System.Net.NameResolution/4.3.0": {
-      "sha512": "AFYl08R7MrsrEjqpQWTZWBadqXyTzNDaWpMqyxhb0d6sGhV6xMDKueuBXlLL30gz+DIRY6MpdgnHWlCh5wmq9w==",
+      "sha512": "pbQ8MrDNBFNNUrIx5x9xZvaLoPestQJ2fNgp1Bet0q+w3dwC225PUc8u6Skx5nO/Uqy7mFeH2WQ043+s8yL+hQ==",
       "type": "package",
       "path": "system.net.nameresolution/4.3.0",
       "files": [
@@ -10957,7 +10954,7 @@
       ]
     },
     "System.Private.DataContractSerialization/4.1.1": {
-      "sha512": "lcqFBUaCZxPiUkA4dlSOoPZGtZsAuuElH2XHgLwGLxd7ZozWetV5yiz0qGAV2AUYOqw97MtZBjbLMN16Xz4vXA==",
+      "sha512": "4xIQbEe/e7Lu4MhZNGzXyTpujxA/NdDPlDo676LlsbePVyubRnSD1qIKPf5e0kldLAVZ7N38HhpJ2tBe/KDolw==",
       "type": "package",
       "path": "system.private.datacontractserialization/4.1.1",
       "files": [
@@ -13313,7 +13310,7 @@
       ]
     },
     "System.Xml.XmlSerializer/4.0.11": {
-      "sha512": "FrazwwqfIXTfq23mfv4zH+BjqkSFNaNFBtjzu3I9NRmG8EELYyrv/fJnttCIwRMFRR/YKXF1hmsMmMEnl55HGw==",
+      "sha512": "ixjOrNK3Jjd+lxQKgIr0Hg8hFQhJD5nwpKrjEIT9ye0YnqgvbiKdWFINCIGyXo5iJF+ZP3Taq+KeqC6SuAjg0Q==",
       "type": "package",
       "path": "system.xml.xmlserializer/4.0.11",
       "files": [
@@ -13476,70 +13473,6 @@
         "windowsazure.storage.8.1.4.nupkg.sha512",
         "windowsazure.storage.nuspec"
       ]
-    },
-    "x-editable/1.5.3": {
-      "sha512": "c1Hp0JCCMel+F1gfGBFzD1Cb/w47fsLEQgnuWvyfypWRQhaMHXizraKHbnNWsGK4r7ml6uDOur8r2lf7vrGNhw==",
-      "type": "package",
-      "path": "x-editable/1.5.3",
-      "files": [
-        "CHANGELOG.txt",
-        "LICENSE-MIT",
-        "README.md",
-        "content/Content/bootstrap-editable/css/bootstrap-editable.css",
-        "content/Content/bootstrap-editable/img/clear.png",
-        "content/Content/bootstrap-editable/img/loading.gif",
-        "content/Content/bootstrap3-editable/css/bootstrap-editable.css",
-        "content/Content/bootstrap3-editable/img/clear.png",
-        "content/Content/bootstrap3-editable/img/loading.gif",
-        "content/Content/inputs-ext/address/address.css",
-        "content/Content/inputs-ext/typeaheadjs/lib/typeahead.js-bootstrap.css",
-        "content/Content/inputs-ext/wysihtml5/bootstrap-wysihtml5-0.0.2/bootstrap-wysihtml5-0.0.2.css",
-        "content/Content/inputs-ext/wysihtml5/bootstrap-wysihtml5-0.0.2/wysiwyg-color.css",
-        "content/Content/jquery-editable/css/jquery-editable.css",
-        "content/Content/jquery-editable/img/clear.png",
-        "content/Content/jquery-editable/img/loading.gif",
-        "content/Content/jquery-editable/jquery-ui-datepicker/css/redmond/images/animated-overlay.gif",
-        "content/Content/jquery-editable/jquery-ui-datepicker/css/redmond/images/ui-bg_flat_0_aaaaaa_40x100.png",
-        "content/Content/jquery-editable/jquery-ui-datepicker/css/redmond/images/ui-bg_flat_55_fbec88_40x100.png",
-        "content/Content/jquery-editable/jquery-ui-datepicker/css/redmond/images/ui-bg_glass_75_d0e5f5_1x400.png",
-        "content/Content/jquery-editable/jquery-ui-datepicker/css/redmond/images/ui-bg_glass_85_dfeffc_1x400.png",
-        "content/Content/jquery-editable/jquery-ui-datepicker/css/redmond/images/ui-bg_glass_95_fef1ec_1x400.png",
-        "content/Content/jquery-editable/jquery-ui-datepicker/css/redmond/images/ui-bg_gloss-wave_55_5c9ccc_500x100.png",
-        "content/Content/jquery-editable/jquery-ui-datepicker/css/redmond/images/ui-bg_inset-hard_100_f5f8f9_1x100.png",
-        "content/Content/jquery-editable/jquery-ui-datepicker/css/redmond/images/ui-bg_inset-hard_100_fcfdfd_1x100.png",
-        "content/Content/jquery-editable/jquery-ui-datepicker/css/redmond/images/ui-icons_217bc0_256x240.png",
-        "content/Content/jquery-editable/jquery-ui-datepicker/css/redmond/images/ui-icons_2e83ff_256x240.png",
-        "content/Content/jquery-editable/jquery-ui-datepicker/css/redmond/images/ui-icons_469bdd_256x240.png",
-        "content/Content/jquery-editable/jquery-ui-datepicker/css/redmond/images/ui-icons_6da8d5_256x240.png",
-        "content/Content/jquery-editable/jquery-ui-datepicker/css/redmond/images/ui-icons_cd0a0a_256x240.png",
-        "content/Content/jquery-editable/jquery-ui-datepicker/css/redmond/images/ui-icons_d8e7f3_256x240.png",
-        "content/Content/jquery-editable/jquery-ui-datepicker/css/redmond/images/ui-icons_f9bd01_256x240.png",
-        "content/Content/jquery-editable/jquery-ui-datepicker/css/redmond/jquery-ui-1.10.3.custom.css",
-        "content/Content/jquery-editable/jquery-ui-datepicker/css/redmond/jquery-ui-1.10.3.custom.min.css",
-        "content/Content/jqueryui-editable/css/jqueryui-editable.css",
-        "content/Content/jqueryui-editable/img/clear.png",
-        "content/Content/jqueryui-editable/img/loading.gif",
-        "content/Scripts/bootstrap-editable/js/bootstrap-editable.js",
-        "content/Scripts/bootstrap-editable/js/bootstrap-editable.min.js",
-        "content/Scripts/bootstrap3-editable/js/bootstrap-editable.js",
-        "content/Scripts/bootstrap3-editable/js/bootstrap-editable.min.js",
-        "content/Scripts/inputs-ext/address/address.js",
-        "content/Scripts/inputs-ext/typeaheadjs/lib/typeahead.js",
-        "content/Scripts/inputs-ext/typeaheadjs/typeaheadjs.js",
-        "content/Scripts/inputs-ext/wysihtml5/bootstrap-wysihtml5-0.0.2/bootstrap-wysihtml5-0.0.2.js",
-        "content/Scripts/inputs-ext/wysihtml5/bootstrap-wysihtml5-0.0.2/bootstrap-wysihtml5-0.0.2.min.js",
-        "content/Scripts/inputs-ext/wysihtml5/bootstrap-wysihtml5-0.0.2/wysihtml5-0.3.0.js",
-        "content/Scripts/inputs-ext/wysihtml5/bootstrap-wysihtml5-0.0.2/wysihtml5-0.3.0.min.js",
-        "content/Scripts/inputs-ext/wysihtml5/wysihtml5.js",
-        "content/Scripts/jquery-editable/jquery-ui-datepicker/js/jquery-ui-1.10.3.custom.js",
-        "content/Scripts/jquery-editable/jquery-ui-datepicker/js/jquery-ui-1.10.3.custom.min.js",
-        "content/Scripts/jquery-editable/js/jquery-editable-poshytip.js",
-        "content/Scripts/jquery-editable/js/jquery-editable-poshytip.min.js",
-        "content/Scripts/jqueryui-editable/js/jqueryui-editable.js",
-        "content/Scripts/jqueryui-editable/js/jqueryui-editable.min.js",
-        "x-editable.1.5.3.nupkg.sha512",
-        "x-editable.nuspec"
-      ]
     }
   },
   "projectFileDependencyGroups": {
@@ -13548,32 +13481,28 @@
       "Microsoft.AspNetCore.All >= 2.0.5",
       "Microsoft.EntityFrameworkCore.Tools >= 2.0.1",
       "Microsoft.NETCore.App >= 2.0.0",
-      "Microsoft.VisualStudio.Web.CodeGeneration.Design >= 2.0.2",
-      "x-editable >= 1.5.3"
+      "Microsoft.VisualStudio.Web.CodeGeneration.Design >= 2.0.2"
     ]
   },
   "packageFolders": {
-    "C:\\Users\\USER\\.nuget\\packages\\": {},
-    "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackagesFallback\\": {},
+    "C:\\Users\\Rodion\\.nuget\\packages\\": {},
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\itransition\\курсовой\\EssayStorage\\EssayStorage\\EssayStorage.csproj",
+      "projectUniqueName": "C:\\Users\\Rodion\\Desktop\\itra\\projects\\EssayStorage\\EssayStorage\\EssayStorage.csproj",
       "projectName": "EssayStorage",
-      "projectPath": "D:\\itransition\\курсовой\\EssayStorage\\EssayStorage\\EssayStorage.csproj",
-      "packagesPath": "C:\\Users\\USER\\.nuget\\packages\\",
-      "outputPath": "D:\\itransition\\курсовой\\EssayStorage\\EssayStorage\\obj\\",
+      "projectPath": "C:\\Users\\Rodion\\Desktop\\itra\\projects\\EssayStorage\\EssayStorage\\EssayStorage.csproj",
+      "packagesPath": "C:\\Users\\Rodion\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Rodion\\Desktop\\itra\\projects\\EssayStorage\\EssayStorage\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
-        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackagesFallback\\",
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\USER\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.Fallback.config"
+        "C:\\Users\\Rodion\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "netcoreapp2.0"
@@ -13618,10 +13547,6 @@
             "suppressParent": "All",
             "target": "Package",
             "version": "[2.0.2, )"
-          },
-          "x-editable": {
-            "target": "Package",
-            "version": "[1.5.3, )"
           }
         },
         "imports": [
