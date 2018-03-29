@@ -5,8 +5,10 @@
 
 <link rel="stylesheet" href="~/lib/editor.md/examples/css/style.css" />
 <link rel="stylesheet" href="~/lib/editor.md/css/editormd.min.css" />
+<link rel="stylesheet" href="~/lib/font-awesome/css/font-awesome.min.css" />
+<link rel="stylesheet" href="~/css/comments.css" />
 
-<div id="essayhtml" style="display:none; margin-top: 60px; border: 1px solid #dddddd; border-radius: 2px; padding: 15px 20px 20px 20px;">
+<div id="essayhtml" style="display:none; margin-top: 15px; border: 1px solid #dddddd; border-radius: 2px; padding: 15px 20px 20px 20px;">
     <textarea>@Model.Content</textarea>
 </div>
 
@@ -15,7 +17,7 @@
 <script src="~/lib/editor.md/lib/marked.min.js"></script>
 <script src="~/lib/editor.md/lib/prettify.min.js"></script>
 <script src="~/lib/editor.md/lib/raphael.min.js"></script>
-<script src="~/lib/editor.mdd/lib/underscore.min.js"></script>
+<script src="~/lib/editor.md/lib/underscore.min.js"></script>
 <script src="~/lib/editor.md/lib/sequence-diagram.min.js"></script>
 <script src="~/lib/editor.md/lib/flowchart.min.js"></script>
 <script src="~/lib/editor.md/lib/jquery.flowchart.min.js"></script>
@@ -32,3 +34,152 @@
     });
     $("#essayhtml").css("display", "block");
 </script>
+
+
+<section class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel">
+                <div class="panel-body">
+                    <textarea class="form-control" rows="2" placeholder="Добавьте Ваш комментарий"></textarea>
+                    <div class="mar-top clearfix">
+                        <button class="btn btn-sm btn-primary pull-right" type="submit"><i class="fa fa-pencil fa-fw"></i> Добавить</button>
+                    </div>
+                </div>
+            </div>
+            <div class="panel">
+                <div class="panel-body">
+                    <div class="media-block">
+                        <a class="media-left" href="#"><img class="img-circle img-sm" src="http://bootstraptema.ru/snippets/icons/2016/mia/1.png"></a>
+                        <div class="media-body">
+                            <div class="mar-btm">
+                                <a href="#" class="btn-link text-semibold media-heading box-inline">Максим</a>
+                                <p class="text-muted text-sm"><i class="fa fa-mobile fa-lg"></i> - 19-06-2016</p>
+                            </div>
+                            <p>Секция с комментариями для сайта с подключенным Bootstrap!!!</p>
+                            <div class="pad-ver">
+                                <div class="btn-group">
+                                    <a class="btn btn-sm btn-default btn-hover-success" href="#"><i class="fa fa-thumbs-up"></i></a>
+                                    <a class="btn btn-sm btn-default btn-hover-danger" href="#"><i class="fa fa-thumbs-down"></i></a>
+                                </div>
+                                <a class="btn btn-sm btn-default btn-hover-primary" href="#">Ответить</a>
+                            </div>
+                            <hr>
+
+                            <!-- Комментарий -->
+                            <div>
+                                <div class="media-block">
+                                    <a class="media-left" href="#"><img class="img-circle img-sm" alt="Профиль пользователя" src="http://bootstraptema.ru/snippets/icons/2016/mia/2.png"></a>
+                                    <div class="media-body">
+                                        <div class="mar-btm">
+                                            <a href="#" class="btn-link text-semibold media-heading box-inline">Вася</a>
+                                            <p class="text-muted text-sm"><i class="fa fa-mobile fa-lg"></i> - 19-06-2016</p>
+                                        </div>
+                                        <p>Дада. С формой добавления нового комментария!</p>
+                                        <div class="pad-ver">
+                                            <div class="btn-group">
+                                                <a class="btn btn-sm btn-default btn-hover-success active" href="#"><i class="fa fa-thumbs-up"></i> Нравится</a>
+                                                <a class="btn btn-sm btn-default btn-hover-danger" href="#"><i class="fa fa-thumbs-down"></i></a>
+                                            </div>
+                                            <a class="btn btn-sm btn-default btn-hover-primary" href="#">Ответить</a>
+                                        </div>
+                                        <hr>
+                                        <div>
+                                            <div class="media-block">
+                                                <a class="media-left" href="#"><img class="img-circle img-sm" alt="Профиль пользователя" src="http://bootstraptema.ru/snippets/icons/2016/mia/2.png"></a>
+                                                <div class="media-body">
+                                                    <div class="mar-btm">
+                                                        <a href="#" class="btn-link text-semibold media-heading box-inline">Вася</a>
+                                                        <p class="text-muted text-sm"><i class="fa fa-mobile fa-lg"></i> - 19-06-2016</p>
+                                                    </div>
+                                                    <p>Дада. С формой добавления нового комментария!</p>
+                                                    <div class="pad-ver">
+                                                        <div class="btn-group">
+                                                            <a class="btn btn-sm btn-default btn-hover-success active" href="#"><i class="fa fa-thumbs-up"></i> Нравится</a>
+                                                            <a class="btn btn-sm btn-default btn-hover-danger" href="#"><i class="fa fa-thumbs-down"></i></a>
+                                                        </div>
+                                                        <a class="btn btn-sm btn-default btn-hover-primary" href="#">Ответить</a>
+                                                    </div>
+                                                    <hr>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="media-block">
+                                    <a class="media-left" href="#">
+                                        <img class="img-circle img-sm" alt="Профиль пользователя" src="http://bootstraptema.ru/snippets/icons/2016/mia/3.png">
+                                    </a>
+                                    <div class="media-body">
+                                        <div class="mar-btm">
+                                            <a href="#" class="btn-link text-semibold media-heading box-inline">Денис</a>
+                                            <p class="text-muted text-sm"><i class="fa fa-globe fa-lg"></i> - 20-06-2016</p>
+                                        </div>
+                                        <p>Просто так что нибудь напишу</p>
+                                        <div class="pad-ver">
+                                            <div class="btn-group">
+                                                <a class="btn btn-sm btn-default btn-hover-success" href="#"><i class="fa fa-thumbs-up"></i></a>
+                                                <a class="btn btn-sm btn-default btn-hover-danger" href="#"><i class="fa fa-thumbs-down"></i></a>
+                                            </div>
+                                            <a class="btn btn-sm btn-default btn-hover-primary" href="#">Ответить</a>
+                                        </div>
+                                        <hr>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--===================================================-->
+                    <!-- Конец Содержания Новостей -->
+                    <!-- Содержание Новостей -->
+                    <!--===================================================-->
+                    <div class="media-block pad-all">
+                        <a class="media-left" href="#"><img class="img-circle img-sm" alt="Профиль пользователя" src="http://bootstraptema.ru/snippets/icons/2016/mia/4.png"></a>
+                        <div class="media-body">
+                            <div class="mar-btm">
+                                <a href="#" class="btn-link text-semibold media-heading box-inline">Ирина</a>
+                                <p class="text-muted text-sm"><i class="fa fa-mobile fa-lg"></i> - 20-06-2016</p>
+                            </div>
+                            <p>А я добавлю картинку</p>
+                            <img class="img-responsive thumbnail" src="http://drawings-girls.ucoz.net/2015/05/krasivaya-devushka-albinos.jpg" alt="Image">
+                            <div class="pad-ver">
+                                <span class="tag tag-sm"><i class="fa fa-heart text-danger"></i> 250 Лайков</span>
+                                <div class="btn-group">
+                                    <a class="btn btn-sm btn-default btn-hover-success" href="#"><i class="fa fa-thumbs-up"></i></a>
+                                    <a class="btn btn-sm btn-default btn-hover-danger" href="#"><i class="fa fa-thumbs-down"></i></a>
+                                </div>
+                                <a class="btn btn-sm btn-default btn-hover-primary" href="#">Ответить</a>
+                            </div>
+                            <hr>
+
+                            <!-- Комментарий -->
+                            <div>
+                                <div class="media-block pad-all">
+                                    <a class="media-left" href="#"><img class="img-circle img-sm" alt="Профиль пользователя" src="http://bootstraptema.ru/snippets/icons/2016/mia/5.png"></a>
+                                    <div class="media-body">
+                                        <div class="mar-btm">
+                                            <a href="#" class="btn-link text-semibold media-heading box-inline">Коля</a>
+                                            <p class="text-muted text-sm"><i class="fa fa-globe fa-lg"></i> - 20-06-2016</p>
+                                        </div>
+                                        <p><a href="http://bootstraptema.ru/" target="_blank" class="btn">Всё для Bootstrap</a></p>
+                                        <div>
+                                            <div class="btn-group">
+                                                <a class="btn btn-sm btn-default btn-hover-success" href="#"><i class="fa fa-thumbs-up"></i></a>
+                                                <a class="btn btn-sm btn-default btn-hover-danger" href="#"><i class="fa fa-thumbs-down"></i></a>
+                                            </div>
+                                            <a class="btn btn-sm btn-default btn-hover-primary" href="#">Ответить</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--===================================================-->
+                    <!-- Конец Содержания Новостей -->
+                </div>
+            </div>
+        </div>
+
+    </div><!-- /.row -->
+</section><!-- /.container -->

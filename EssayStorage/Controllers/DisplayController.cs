@@ -36,5 +36,10 @@ namespace EssayStorage.Controllers
             //db.SaveChanges();
             return View(essay);
         }
+
+        public List<Comment> GetComments(int essayId)
+        {
+            return db.Comments.Where(c => c.EssayId == essayId).ToList();
+        }
     }
 }
