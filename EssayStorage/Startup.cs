@@ -13,6 +13,7 @@ using EssayStorage.Models;
 using EssayStorage.Services;
 using Microsoft.Extensions.FileProviders;
 using System.IO;
+using Microsoft.AspNetCore.Http;
 
 namespace EssayStorage
 {
@@ -36,13 +37,13 @@ namespace EssayStorage
                 .AddDefaultTokenProviders();
             services.AddAuthentication().AddTwitter(twitterOptions =>
             {
-                twitterOptions.ConsumerKey = Configuration["Authentication:Twitter:ConsumerKey"];
-                twitterOptions.ConsumerSecret = Configuration["Authentication:Twitter:ConsumerSecret"];
+                twitterOptions.ConsumerKey = "XqDKVP56TIxK7N5SwN5jXwHqP";
+                twitterOptions.ConsumerSecret = "ejzbvTHzCckwMU8ZEw9zR5ylU3h1PmwBbgnUZA8VEd7J1wHOmt";
             })
             .AddFacebook(facebookOptions =>
             {
-                facebookOptions.AppId = Configuration["Authentication:Facebook:AppId"];
-                facebookOptions.AppSecret = Configuration["Authentication:Facebook:AppSecret"];
+                facebookOptions.AppId = "1830786570279015";
+                facebookOptions.AppSecret = "e3e9482bce5a8ee1f6d1ec863ccda045";
             });
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();
@@ -66,15 +67,21 @@ namespace EssayStorage
 
             app.UseStaticFiles();
 
-            app.UseFileServer(new FileServerOptions()
+            /*app.UseStaticFiles(new StaticFileOptions() // обрабатывает запросы к каталогу wwwroot/html
+            {
+                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "node_modules")),
+                RequestPath = new PathString("/node_modules")
+            });*/
+
+            /*app.UseFileServer(new FileServerOptions()
             {
                 FileProvider = new PhysicalFileProvider(
                     Path.Combine(env.ContentRootPath, "node_modules")
                 ),
                 RequestPath = "/node_modules",
                 EnableDirectoryBrowsing = false
-            });
-
+            });*/
+            
             app.UseAuthentication();
 
             app.UseMvc(routes =>
