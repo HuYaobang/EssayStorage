@@ -207,7 +207,9 @@ namespace EssayStorage.Migrations
                     EssayId = table.Column<int>(nullable: false),
                     ParentId = table.Column<int>(nullable: true),
                     Text = table.Column<string>(nullable: true),
-                    UserId = table.Column<string>(nullable: true)
+                    UserId = table.Column<string>(nullable: true),
+                    UserName = table.Column<string>(nullable: true),
+                    UserPicturePath = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -221,7 +223,7 @@ namespace EssayStorage.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "EssayTag",
+                name: "EssayToTags",
                 columns: table => new
                 {
                     EssayId = table.Column<int>(nullable: false),
@@ -229,15 +231,15 @@ namespace EssayStorage.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_EssayTag", x => new { x.EssayId, x.TagId });
+                    table.PrimaryKey("PK_EssayToTags", x => new { x.EssayId, x.TagId });
                     table.ForeignKey(
-                        name: "FK_EssayTag_Essays_EssayId",
+                        name: "FK_EssayToTags_Essays_EssayId",
                         column: x => x.EssayId,
                         principalTable: "Essays",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_EssayTag_Tags_TagId",
+                        name: "FK_EssayToTags_Tags_TagId",
                         column: x => x.TagId,
                         principalTable: "Tags",
                         principalColumn: "Id",
@@ -245,7 +247,7 @@ namespace EssayStorage.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "UserComment",
+                name: "UserToLikedComments",
                 columns: table => new
                 {
                     UserId = table.Column<string>(nullable: false),
@@ -253,15 +255,15 @@ namespace EssayStorage.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserComment", x => new { x.UserId, x.CommentId });
+                    table.PrimaryKey("PK_UserToLikedComments", x => new { x.UserId, x.CommentId });
                     table.ForeignKey(
-                        name: "FK_UserComment_Comments_CommentId",
+                        name: "FK_UserToLikedComments_Comments_CommentId",
                         column: x => x.CommentId,
                         principalTable: "Comments",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_UserComment_AspNetUsers_UserId",
+                        name: "FK_UserToLikedComments_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
@@ -325,13 +327,13 @@ namespace EssayStorage.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_EssayTag_TagId",
-                table: "EssayTag",
+                name: "IX_EssayToTags_TagId",
+                table: "EssayToTags",
                 column: "TagId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserComment_CommentId",
-                table: "UserComment",
+                name: "IX_UserToLikedComments_CommentId",
+                table: "UserToLikedComments",
                 column: "CommentId");
         }
 
@@ -353,10 +355,10 @@ namespace EssayStorage.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "EssayTag");
+                name: "EssayToTags");
 
             migrationBuilder.DropTable(
-                name: "UserComment");
+                name: "UserToLikedComments");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

@@ -23,6 +23,8 @@ namespace EssayStorage.Models.Database
 
         //author
         public string UserId { get; set; }
+        public string UserName { get; set; }
+        public string UserPicturePath { get; set; }
         //public User User { get; set; }
 
         public virtual ICollection<UserComment> UsersWhoLiked { get; set; }

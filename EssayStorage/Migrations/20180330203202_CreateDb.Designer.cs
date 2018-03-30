@@ -11,7 +11,7 @@ using System;
 namespace EssayStorage.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20180326140607_CreateDb")]
+    [Migration("20180330203202_CreateDb")]
     partial class CreateDb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -97,6 +97,10 @@ namespace EssayStorage.Migrations
 
                     b.Property<string>("UserId");
 
+                    b.Property<string>("UserName");
+
+                    b.Property<string>("UserPicturePath");
+
                     b.HasKey("Id");
 
                     b.HasIndex("EssayId");
@@ -144,7 +148,7 @@ namespace EssayStorage.Migrations
 
                     b.HasIndex("TagId");
 
-                    b.ToTable("EssayTag");
+                    b.ToTable("EssayToTags");
                 });
 
             modelBuilder.Entity("EssayStorage.Models.Database.Tag", b =>
@@ -169,7 +173,7 @@ namespace EssayStorage.Migrations
 
                     b.HasIndex("CommentId");
 
-                    b.ToTable("UserComment");
+                    b.ToTable("UserToLikedComments");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

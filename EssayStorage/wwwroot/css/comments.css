@@ -62,7 +62,9 @@
     font-size: 12px;
     line-height: 1.42857;
     vertical-align: middle;
+    -o-transition: all .15s;
     -webkit-transition: all .15s;
+    -moz-transition: all .15s;
     transition: all .15s;
 }
 
@@ -89,9 +91,9 @@
     padding-right: 9px;
 }
 
-    .btn-sm, .btn-group-sm > .btn, .btn-icon.btn-sm {
-        padding: 5px 10px !important;
-    }
+.btn-sm, .btn-group-sm > .btn, .btn-icon.btn-sm {
+    padding: 5px 10px;
+}
 
 .mar-top {
     margin-top: 15px;

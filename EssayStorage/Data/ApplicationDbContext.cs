@@ -33,5 +33,7 @@ namespace EssayStorage.Data
         public DbSet<Essay> Essays { get; set; }
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Tag> Tags { get; set; }
+        public DbSet<EssayTag> EssayToTags { get; set; }
+        public DbSet<UserComment> UserToLikedComments { get; set; }
     }
 }

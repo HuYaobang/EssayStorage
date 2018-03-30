@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using EssayStorage.Data;
 using EssayStorage.Models;
+using EssayStorage.Models.ClientsModels;
 using EssayStorage.Models.Database;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -23,23 +24,80 @@ namespace EssayStorage.Controllers
 
         public IActionResult Essay(int essayId)
         {
-            Console.WriteLine("@@@@@@@@@@@@@@@@@: " + essayId);
             Essay essay = db.Essays.Where(e => e.Id == essayId).FirstOrDefault();
             if (essay == null)
             {
                 return View("essaynotfound");
             }
-            //Comment comments = db.Comments.Where
-            //essay.Comments = new List<Comment>();
-            //essay.Comments.Add(new Comment { Text = "123", CreationDate = DateTime.Now, UserId = userManager.GetUserId(User) });
-            //db.Essays.Update(essay);
-            //db.SaveChanges();
             return View(essay);
         }
 
-        public List<Comment> GetComments(int essayId)
+        public async Task<bool?> PressLike(int id)
         {
-            return db.Comments.Where(c => c.EssayId == essayId).ToList();
+            var user = await userManager.GetUserAsync(User);
+            var obj = new UserComment { UserId = user.Id, CommentId = id };
+            if (db.UserToLikedComments.Any(o => o.CommentId == obj.CommentId && o.UserId == user.Id))
+            {
+                db.Remove(obj);
+                await db.SaveChangesAsync();
+                return false;
+            }
+            else
+            {
+                db.UserToLikedComments.Add(obj);
+                await db.SaveChangesAsync();
+                return true;
+            }
+        }
+
+        public async Task SaveComment(int? parentId, int essayId, string text)
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                if (parentId != null)
+                {
+                    Comment comment = db.Comments.Where(c => c.Id == parentId).FirstOrDefault();
+                    if (comment == null) return;
+                    if (comment.EssayId != essayId) return;
+                }
+                else if (db.Essays.Where(e => e.Id == essayId).FirstOrDefault() == null) return;
+
+                var user = await userManager.GetUserAsync(User);
+                db.Comments.Add(new Comment
+                {
+                    UserId = user.Id,
+                    UserName = user.UserName,
+                    ParentId = parentId,
+                    EssayId = essayId,
+                    Text = text,
+                    CreationDate = DateTime.Now
+                });
+                db.SaveChanges();
+            }
+        }
+
+        public List<ClientComment> GetComments(int essayId)
+        {
+            //getting author's name via users table by id takes by 2 times more time
+            //need to add real time responses
+            List<Comment> comments = db.Comments.Where(c => c.EssayId == essayId).ToList();
+            comments.Reverse();
+            List<ClientComment> ret = new List<ClientComment>();
+            foreach (var c in comments)
+            {
+                var user = db.Users.First(u => u.Id == c.UserId);
+                ret.Add(new ClientComment
+                {
+                    Id = c.Id,
+                    ParentId = c.ParentId,
+                    CreationDate = c.CreationDate,
+                    LikesCount = db.UserToLikedComments.Where(o => o.CommentId == c.Id).Count(),
+                    Text = c.Text,
+                    UserPicturePath = user.PicturePath,
+                    UserName = user.UserName
+                });
+            }
+            return ret;
         }
     }
 }
