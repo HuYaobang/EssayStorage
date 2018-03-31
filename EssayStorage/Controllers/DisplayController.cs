@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using EssayStorage.Data;
 using EssayStorage.Models;
@@ -15,6 +17,8 @@ namespace EssayStorage.Controllers
     {
         private ApplicationDbContext db;
         private UserManager<ApplicationUser> userManager;
+
+        //private ConcurrentDictionary<>
 
         public DisplayController(ApplicationDbContext db, UserManager<ApplicationUser> userManager)
         {
@@ -74,6 +78,42 @@ namespace EssayStorage.Controllers
                 });
                 db.SaveChanges();
             }
+        }
+
+        public async Task<List<ClientComment>> UpdateComments(int essayId, int lastCommentId)
+        {
+            int sum = 0;
+            int step = 3000;
+            int timeout = 58000;
+            if (lastCommentId != 0 && essayId != 0)
+            {
+                while (sum < timeout)
+                {
+                    List<Comment> comments = db.Comments.Where(c => c.EssayId == essayId && c.Id > lastCommentId).ToList();
+                    if (comments.Count != 0)
+                    {
+                        List<ClientComment> ret = new List<ClientComment>();
+                        foreach (var c in comments)
+                        {
+                            var user = db.Users.First(u => u.Id == c.UserId);
+                            ret.Add(new ClientComment
+                            {
+                                Id = c.Id,
+                                ParentId = c.ParentId,
+                                CreationDate = c.CreationDate,
+                                LikesCount = db.UserToLikedComments.Where(o => o.CommentId == c.Id).Count(),
+                                Text = c.Text,
+                                UserPicturePath = user.PicturePath,
+                                UserName = user.UserName
+                            });
+                        }
+                        return ret;
+                    }
+                    await Task.Delay(step);
+                    sum += step;
+                }
+            }
+            return null;
         }
 
         public List<ClientComment> GetComments(int essayId)

@@ -7,6 +7,7 @@
 <link rel="stylesheet" href="~/lib/editor.md/css/editormd.min.css" />
 <link rel="stylesheet" href="~/lib/font-awesome/css/font-awesome.min.css" />
 <link rel="stylesheet" href="~/css/comments.css" />
+<link rel="stylesheet" href="~/css/waitingelement.css" />
 
 <div id="essayhtml" style="display:none; margin-top: 15px; border: 1px solid #dddddd; border-radius: 2px; padding: 15px 20px 20px 20px;">
     <textarea>@Model.Content</textarea>
@@ -39,20 +40,45 @@
 
 <div id="test"></div>
 <script>
-    //var ttt;
+    var lastCommentId = 0;
     $.post(
         "GetComments",
         { essayId: $('#essay-id').val() },
         function (data) {
-            //ttt = data;
             buildComments(data);
+            $('#all-comments').attr("style", "display: block;");
+            $('#comments-waiter').attr("style", "display: none;");
+            poll();
         }
     );
 
+    function poll() {
+        $.ajax({
+            url: "UpdateComments", data: { essayId: $('#essay-id').val(), lastCommentId: lastCommentId }, success: function (data) {
+                for (let i = 0; i < data.length; i++) {
+                    if (data[i].id > lastCommentId)
+                        lastCommentId = data[i].id;
+                    used[data[i].id] = data[i];
+                    let placeToAdd;
+                    if (data[i].parentId == null) {
+                        placeToAdd = $('#all-comments');
+                        data[i].depth = 1;
+                    } else {
+                        placeToAdd = $('#childs-' + data[i].parentId);
+                        data[i].depth = used[data[i].parentId].depth + 1;
+                    }
+                    let el = createComment(data[i], []);
+                    placeToAdd.prepend(el);
+                }
+            }, complete: poll, timeout: 60000
+        });
+    }
+    var used = new Object;
+    var root = [];
     function buildComments(data) {
-        used = new Object;
-        root = [];
         for (let i = 0; i < data.length; i++) {
+            if (data[i].id > lastCommentId)
+                lastCommentId = data[i].id;
             if (data[i].parentId == null) {
                 data[i].childs = [];
                 data[i].depth = 1;
@@ -72,8 +98,7 @@
         }
 
         for (let i = 0; i < root.length; i++) {
-            var el = getChildsComments(root[i]);
-            //alert(el);
+            let el = getChildsComments(root[i]);
             $('#all-comments').append(el);
         }
     }
@@ -148,7 +173,7 @@
                 )
         );
 
-        var c = $("<div>");
+        var c = $("<div>", { id: "childs-" + parent.id });
         for (i = 0; i < childs.length; i++)
             c.append(childs[i]);
         mediabody.append(c);
@@ -173,8 +198,9 @@
                     </div>
                 </div>
             </div>
-            <div class="panel">
-                <div id="all-comments" class="panel-body">
+            <div style="padding-bottom: 10px;" class="panel">
+                <span id="comments-waiter" class="cssload-loader"><span class="cssload-loader-inner"></span></span>
+                <div style="display: none;" id="all-comments" class="panel-body">
 
                 </div>
             </div>
