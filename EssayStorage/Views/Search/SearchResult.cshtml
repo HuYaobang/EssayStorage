@@ -1,0 +1,33 @@
+﻿@using EssayStorage.Models.Database
+@{
+    ViewData["Title"] = "Search Result";
+}
+
+<center><h3>Result</h3></center>
+<div class="row">
+    <div class="table-responsive">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Specialization</th>
+                    <th>Average rate</th>
+                    <th>Creation time</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var essay in (List<Essay>)ViewData["essays"])
+                {
+                    <tr>
+                        <td style="vertical-align: middle;">@Html.ActionLink(essay.Name, "essay", "display", new { essayId = essay.Id })</td>
+                        <td style="vertical-align: middle;">@essay.Description</td>
+                        <td style="vertical-align: middle;">@essay.Specialization</td>
+                        <td style="vertical-align: middle;">@essay.AverageRating</td>
+                        <td style="vertical-align: middle;">@essay.CreationTime</td>                        
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
