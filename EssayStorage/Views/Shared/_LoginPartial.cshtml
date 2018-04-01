@@ -9,7 +9,7 @@
     <form asp-area="" asp-controller="Search" asp-action="StartSearch" method="post" class="navbar-right">
         <ul class="nav navbar-nav navbar-right">
             <li>
-                <input type="search" class="form-control" placeholder="search" name="Data" style="margin-top:7px" />
+                <input type="search" class="form-control" placeholder="search" name="Data" autocomplete="off" style="margin-top:7px" />
             </li>
             <li>
                 <button type="submit" class="btn btn-link navbar-btn navbar-link">Search</button>
@@ -24,10 +24,10 @@
 }
 else
 {
-    <form asp-area="" asp-controller="Search" asp-action="StartSearch" class="navbar-right">
+    <form asp-area="" asp-controller="Search" asp-action="StartSearch" method="post" class="navbar-right">
         <ul class="nav navbar-nav navbar-right">
             <li>
-                <input type="search" class="form-control" placeholder="search" style="margin-top:7px" />
+                <input type="search" class="form-control" placeholder="search" name="Data" autocomplete="off" style="margin-top:7px" />
             </li>
             <li>
                 <button type="submit" class="btn btn-link navbar-btn navbar-link">Search</button>

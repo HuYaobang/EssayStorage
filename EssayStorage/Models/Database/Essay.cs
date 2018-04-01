@@ -30,5 +30,13 @@ namespace EssayStorage.Models.Database
 
         public virtual ICollection<Comment> Comments { get; set; }
         public virtual ICollection<EssayTag> EssayTags { get; set; }
+
+        public class DateComparer : IComparer<Essay>
+        {
+            public int Compare(Essay x, Essay y)
+            {
+                return y.CreationTime.CompareTo(x.CreationTime);
+            }
+        }
     }
 }
