@@ -40,7 +40,7 @@
 
 <div id="test"></div>
 <script>
-    var lastCommentId = 0;
+    var lastCommentId = -1;
     $.post(
         "GetComments",
         { essayId: $('#essay-id').val() },
@@ -54,7 +54,9 @@
 
     function poll() {
         $.ajax({
-            url: "UpdateComments", data: { essayId: $('#essay-id').val(), lastCommentId: lastCommentId }, success: function (data) {
+            url: "UpdateComments",
+            data: { essayId: $('#essay-id').val(), lastCommentId: lastCommentId },
+            success: function (data) {
                 for (let i = 0; i < data.length; i++) {
                     if (data[i].id > lastCommentId)
                         lastCommentId = data[i].id;

@@ -16,6 +16,7 @@ namespace EssayStorage.Models.Database
 
         public int Id { get; set; }
         public string Name { get; set; }
+        public int Frequency { get; set; }
 
         public virtual ICollection<EssayTag> EssayTags { get; set; }
     }

@@ -156,8 +156,8 @@ namespace EssayStorage.Controllers
             return View(model);
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
+       
+        [HttpGet]        
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();
@@ -165,7 +165,7 @@ namespace EssayStorage.Controllers
             return RedirectToAction(nameof(HomeController.Index), "Home");
         }
 
-        [HttpPost]
+
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public IActionResult ExternalLogin(string provider, string returnUrl = null)
