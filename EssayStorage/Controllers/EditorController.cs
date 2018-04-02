@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using EssayStorage.Data;
 using EssayStorage.Models;
 using EssayStorage.Models.AccountViewModels;
 using EssayStorage.Models.Database;
+using EssayStorage.StaticClasses;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,11 +19,25 @@ namespace EssayStorage.Controllers
     {
         private ApplicationDbContext db;
         private UserManager<ApplicationUser> userManager;
+        private IHostingEnvironment appEnvironment;
 
-        public EditorController(ApplicationDbContext db, UserManager<ApplicationUser> userManager)
+        public EditorController(ApplicationDbContext db, UserManager<ApplicationUser> userManager, IHostingEnvironment appEnvironment)
         {
             this.db = db;
             this.userManager = userManager;
+            this.appEnvironment = appEnvironment;
+        }
+
+        [HttpPost]
+        public async Task<string> SavePicture(IFormFile file)
+        {
+            if (file != null) {
+                string path = String.Format("/images/pictures/{0}.png", Rand.GetRandomEnglishLiteralString(64));
+                using (var filestream = new FileStream(appEnvironment.WebRootPath + path, FileMode.Create))
+                    await file.CopyToAsync(filestream);
+                return path;
+            }
+            return null;
         }
 
         [HttpGet]

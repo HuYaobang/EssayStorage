@@ -34,9 +34,17 @@
 
 <script src="~/lib/editor.md/examples/js/jquery.min.js"></script>
 <script src="~/lib/editor.md/editormd.js"></script>
+<script src="~/lib/dropzone/dist/min/dropzone.min.js"></script>
 <script type="text/javascript">
-    var testEditor;
+    var dropzone = new Dropzone("#test-editormd", { url: "/Editor/SavePicture" });
+    dropzone.on("complete", function (file) {
+        dropzone.removeFile(file);
+    });
+    dropzone.on("success", function (obj, link) {
+        testEditor.insertValue("![](" + link + ")");
+    });
 
+    var testEditor;
     $(function () {
         testEditor = editormd("test-editormd", {
             width: "100%",
