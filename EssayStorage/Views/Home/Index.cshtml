@@ -4,30 +4,39 @@
 }
 
 
-<div class="row">
-    <div class="table-responsive">
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Description</th>
-                    <th>Specialization</th>
-                    <th>Average rate</th>
-                    <th>Creation time</th>
-                </tr>
-            </thead>
-            <tbody>
+<div class="row" style="margin-top: 20px;">
+    <div class="container">
+        <!-- Tags cloud -->
+        <div class="col-md-3 col-md-push-9" style="background-color: aqua; height: 700px;">
+
+        </div>
+
+        <div class="col-md-9 col-md-pull-3">
                 @foreach (var essay in (List<Essay>)ViewData["essays"])
                 {
-                    <tr>
-                        <td style="vertical-align: middle;">@Html.ActionLink(essay.Name, "essay", "display", new { essayId = essay.Id })</td>
-                        <td style="vertical-align: middle;">@essay.Description</td>
-                        <td style="vertical-align: middle;">@essay.Specialization</td>
-                        <td style="vertical-align: middle;">@essay.AverageRating</td>
-                        <td style="vertical-align: middle;">@essay.CreationTime</td>
-                    </tr>
+                <div class="list-group">
+                    <a class="list-group-item" href="../Display/Essay?essayId=@essay.Id">
+                        <center><div style="font-size: 18px; padding: 0 30px;">@essay.Name</div></center>
+                        <div style="padding: 10px; font-size: 15px;">@essay.Description</div>
+                        <div style="padding: 10px 10px 5px 10px; font-size: 13px;"><i>@essay.Specialization</i></div>
+                        <div style="float: right;" id="colorstar">
+                            <span style="color: gray;">@Math.Round(essay.AverageRating, 1)/5&nbsp;</span>
+                        @{
+                            int n = (int)Math.Round(essay.AverageRating);
+                            for (int i = 0; i < n; i++)
+                            {
+                                <span class="glyphicon .glyphicon-star-empty glyphicon-star"></span>
+                            }
+                            for (int i = n; i < 5; i++)
+                            {
+                                <span class="glyphicon .glyphicon-star-empty glyphicon-star-empty"></span>
+                            }
+                        }
+                        </div>
+                        <div style="padding-left: 10px;"><i>@essay.CreationTime</i></div>
+                    </a>
+                </div>
                 }
-            </tbody>
-        </table>
+        </div>
     </div>
 </div>
