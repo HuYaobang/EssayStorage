@@ -13,13 +13,13 @@
 <center><h3>Your essays</h3></center>
 <div class="row">
     <div class="table-responsive">
-        <table id="essays-table" class="table table-bordered">
+        <table id="essays-table" class="">
             <thead>
                 <tr>
                     <th>Name</th>
                     <th>Description</th>
                     <th>Specialization</th>
-                    <th>Average rate</th>
+                    <th>Rating</th>
                     <th>Creation time</th>
                     <th></th>
                 </tr>
@@ -27,8 +27,8 @@
             <tbody>
                 @foreach (Essay essay in (List<Essay>)ViewData["essays"]) {
                 <tr>
-                    <td style="vertical-align: middle;">@Html.ActionLink(essay.Name, "essay","display", new { essayId = essay.Id })</td>
-                    <td style="vertical-align: middle;">@essay.Description</td>
+                    <td class="odd" style="vertical-align: middle;">@Html.ActionLink(essay.Name, "essay","display", new { essayId = essay.Id })</td>
+                    <td class="even" style="vertical-align: middle;">@essay.Description</td>
                     <td style="vertical-align: middle;">@essay.Specialization</td>
                     <td style="vertical-align: middle;">@essay.AverageRating</td>
                     <td style="vertical-align: middle;">@essay.CreationTime</td>
@@ -50,7 +50,14 @@
 <script>
     $('#essays-table').DataTable({
         "lengthMenu": false,
-        "lengthChange": false
+        "lengthChange": false,
+        "paging": false,
+        "info": false,
+        "aoColumnDefs": [{
+            "bSortable": false,
+            "aTargets": [1, 5]
+        }],
+        "stripeClasses": ['table-line-odd', null]
     });
 </script>
 
