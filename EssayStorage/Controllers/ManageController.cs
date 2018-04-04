@@ -321,7 +321,7 @@ namespace EssayStorage.Controllers
         [HttpGet]
         public IActionResult NewEssay()
         {
-            return View();
+            return View("EditEssay");
         }
 
         [HttpGet]

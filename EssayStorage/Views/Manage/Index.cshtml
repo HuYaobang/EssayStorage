@@ -4,10 +4,6 @@
     ViewData.AddActivePage(ManageNavPages.Index);
 }
 
-<link href="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/css/bootstrap-editable.css" rel="stylesheet" />
-<script src="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
-
-
 @Html.Partial("_StatusMessage", Model.StatusMessage)
 <div class="row">
     <div class="col-md-4">
@@ -45,18 +41,6 @@
 
             <button type="submit" class="btn btn-default">Save</button>
         </form>
-        <a href="#" id="username">darova</a>
-        <script>
-            $('#username').editable({
-                type: 'text',
-                pk: 228,
-                url: '/Manage/UpdateName',
-                title: 'Enter username',
-                success: function (isSuccessive) {
-                    alert(isSuccessive);
-                }
-            });
-        </script>
     </div>
 
 </div>

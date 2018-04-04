@@ -74,29 +74,26 @@ namespace EssayStorage.Controllers
         [HttpGet]
         public IActionResult NewEssay()
         {
-            return View();
+            return View("EditEssay");
         }
 
         [HttpPost]
-        public IActionResult EditEssay(string Id)
+        public IActionResult EditEssay(int essayId)
         {
-            int id;
-            if (!int.TryParse(Id, out id))
+            Essay essay = db.Essays.Where(e => e.Id == essayId).FirstOrDefault();
+            if (essay != null)
             {
-                return View();
+                var model = new CreateEssayViewModel
+                {
+                    Content = essay.Content,
+                    Description = essay.Description,
+                    Name = essay.Name,
+                    Specialization = essay.Specialization,
+                    Id = essay.Id
+                };
+                return View(model);
             }
-
-            Essay essay = db.Essays.Where(e => e.Id == id).First();
-            var model = new CreateEssayViewModel
-            {
-                Content = essay.Content,
-                Description = essay.Description,
-                Name = essay.Name,
-                Specialization = essay.Specialization,
-                Id = essay.Id
-            };
-           
-            return View(model);
+            return null;
         }
         
         [HttpPost]
@@ -136,7 +133,7 @@ namespace EssayStorage.Controllers
 
                 return View();
             }
-            return View("NewEssay");
+            return View("EditEssay");
         }
     }
 }
