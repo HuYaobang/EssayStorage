@@ -12,10 +12,7 @@ namespace EssayStorage.Models.Database
             EssayTags = new List<EssayTag>();
         }
 
-        //public ICollection<Essay> Essays { get; set; }
-
-        public int Id { get; set; }
-        public string Name { get; set; }
+        public string TagId { get; set; }
         public int Frequency { get; set; }
 
         public virtual ICollection<EssayTag> EssayTags { get; set; }

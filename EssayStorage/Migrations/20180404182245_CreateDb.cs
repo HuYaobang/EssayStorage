@@ -55,14 +55,12 @@ namespace EssayStorage.Migrations
                 name: "Tags",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Frequency = table.Column<int>(nullable: false),
-                    Name = table.Column<string>(nullable: true)
+                    TagId = table.Column<string>(nullable: false),
+                    Frequency = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Tags", x => x.Id);
+                    table.PrimaryKey("PK_Tags", x => x.TagId);
                 });
 
             migrationBuilder.CreateTable(
@@ -227,7 +225,7 @@ namespace EssayStorage.Migrations
                 columns: table => new
                 {
                     EssayId = table.Column<int>(nullable: false),
-                    TagId = table.Column<int>(nullable: false)
+                    TagId = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -242,7 +240,7 @@ namespace EssayStorage.Migrations
                         name: "FK_EssayToTags_Tags_TagId",
                         column: x => x.TagId,
                         principalTable: "Tags",
-                        principalColumn: "Id",
+                        principalColumn: "TagId",
                         onDelete: ReferentialAction.Restrict);
                 });
 

@@ -2,4 +2,14 @@
     ViewData["Title"] = "SaveEssay";
 }
 
-<h2>Saved blyat</h2>
+<center>
+    <h2 style="margin-top: 90px;">Канспект был успешна дабавлен</h2>
+</center>
+
+<script>
+    $(location).attr('href', window.location.host + "/Manage/UserEssays");
+    setTimeout(function () {
+        let path = "https://" + window.location.host + '/Manage/UserEssays';
+        window.location.href = path;
+    }, 2000);
+</script>

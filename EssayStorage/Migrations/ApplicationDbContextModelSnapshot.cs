@@ -139,7 +139,7 @@ namespace EssayStorage.Migrations
                 {
                     b.Property<int>("EssayId");
 
-                    b.Property<int>("TagId");
+                    b.Property<string>("TagId");
 
                     b.HasKey("EssayId", "TagId");
 
@@ -150,14 +150,12 @@ namespace EssayStorage.Migrations
 
             modelBuilder.Entity("EssayStorage.Models.Database.Tag", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<string>("TagId")
                         .ValueGeneratedOnAdd();
 
                     b.Property<int>("Frequency");
 
-                    b.Property<string>("Name");
-
-                    b.HasKey("Id");
+                    b.HasKey("TagId");
 
                     b.ToTable("Tags");
                 });

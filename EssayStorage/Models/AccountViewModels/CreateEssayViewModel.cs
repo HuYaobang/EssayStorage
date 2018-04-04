@@ -4,7 +4,7 @@ namespace EssayStorage.Models.AccountViewModels
 {
     public class CreateEssayViewModel
     {
-        [Required]
+        //[Required]
         public string Tags { get; set; }
 
         [Required]

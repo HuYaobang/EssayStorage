@@ -10,7 +10,7 @@ namespace EssayStorage.Models.Database
         public int EssayId { get; set; }
         public Essay Essay { get; set; }
 
-        public int TagId { get; set; }
+        public string TagId { get; set; }
         public Tag Tag { get; set; }
     }
 }

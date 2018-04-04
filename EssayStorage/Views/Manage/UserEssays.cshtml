@@ -4,13 +4,16 @@
     ViewData.AddActivePage(ManageNavPages.UserEssays);
 }
 
+<link rel="stylesheet" href="~/lib/datatables/media/css/jquery.dataTables.min.css" />
+<script src="~/lib/datatables/media/js/jquery.dataTables.min.js"></script>
+
 <form action="../Editor/NewEssay">
     <button style="margin-top: 10px;" type="submit" class="btn btn-success btn-lg">+ Create essay</button>
 </form>
 <center><h3>Your essays</h3></center>
 <div class="row">
     <div class="table-responsive">
-        <table class="table table-bordered">
+        <table id="essays-table" class="table table-bordered">
             <thead>
                 <tr>
                     <th>Name</th>
@@ -18,6 +21,7 @@
                     <th>Specialization</th>
                     <th>Average rate</th>
                     <th>Creation time</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -42,6 +46,13 @@
         </table>
     </div>
 </div>
+
+<script>
+    $('#essays-table').DataTable({
+        "lengthMenu": false,
+        "lengthChange": false
+    });
+</script>
 
 @section Scripts {
     @await Html.PartialAsync("_ValidationScriptsPartial")
