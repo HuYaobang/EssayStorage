@@ -6,51 +6,94 @@
 <link rel="shortcut icon" href="https://pandao.github.io/editor.md/favicon.ico" type="image/x-icon" />
 
 <div id="layout" style="margin-top: 15px;">
-<form method="post" action="../Editor/SaveEssay">
-    <div asp-validation-summary="All" class="text-danger"></div>
-    <div class="form-group">
-        <label asp-for="Name"></label>
-        <input asp-for="Name" class="form-control" autocomplete="off"/>
-        <span asp-validation-for="Name" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="Description"></label>
-        <input asp-for="Description" class="form-control" autocomplete="off"/>
-        <span asp-validation-for="Description" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="Specialization"></label>
-        <input asp-for="Specialization" class="form-control" autocomplete="off"/>
-        <span asp-validation-for="Specialization" class="text-danger"></span>
-    </div>
+    <form method="post" action="../Editor/SaveEssay">
+        <div asp-validation-summary="All" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="Name"></label>
+            <input asp-for="Name" class="form-control" autocomplete="off" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Description"></label>
+            <input asp-for="Description" class="form-control" autocomplete="off" />
+            <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Specialization"></label>
+            <input asp-for="Specialization" class="form-control" autocomplete="off" />
+            <span asp-validation-for="Specialization" class="text-danger"></span>
+        </div>
 
-    <div id="test-editormd">
-        <textarea asp-for="Content" style="display:none;">
+        <div class="row" id="tags">
+
+        </div>
+        <div class="row">
+            <input id="tag" type="text" class="form-control" style="width:150px;margin-left:50px;margin-top:20px" />
+        </div>
+        <input asp-for="Tags" style="display:none" id="tagsToSend" />
+
+
+        <div id="test-editormd" style="margin-top:20px">
+            <textarea asp-for="Content" style="display:none;">
         </textarea>
-    </div>
-    <button type="submit" class="btn btn-info">Send</button>
-</form>
+        </div>
+        <div id="save" class="btn btn-info">Save</div>
+        <div id="alert" style="display:none; position:fixed;width:500px;height:300px;top:50%;left:50%;margin-top:-150px;margin-left:-250px;z-index:99999;background-color:lightblue">
+            <h2 style="position:absolute;width:300px;height:100px;top:40px;left:150px;margin-left:-55px;text-align:center">Are you sure?</h2>
+            <div id="close" style="cursor:pointer; font-size:40px; position:absolute;top:15px;right:7px;height:40px;width:50px;color:red">X</div>
+            <button type="submit" id="send" class="btn" style="position:absolute;bottom:10px;width:100px;left:50%;margin-left:-50px">Send</button>
+        </div>
+
+    </form>
+
 </div>
+<div id="layout1" style="display:none;position:fixed;width:100%;height:100%;top:0;left:0;background-color:rgba(128, 128, 128,0.7);z-index:9000"></div>
 
-    <script src="~/lib/editor.md/examples/js/jquery.min.js"></script>
-    <script src="~/lib/editor.md/editormd.js"></script>
-    <script src="~/lib/dropzone/dist/min/dropzone.min.js"></script>
-    <script type="text/javascript">
-        var dropzone = new Dropzone("#test-editormd", { url: "/Editor/SavePicture" });
-        dropzone.on("complete", function (file) {
-            dropzone.removeFile(file);
+<script src="~/lib/editor.md/examples/js/jquery.min.js"></script>
+<script src="~/lib/editor.md/editormd.js"></script>
+<script type="text/javascript">
+    var testEditor;
+
+    $(function () {
+        testEditor = editormd("test-editormd", {
+            width: "100%",
+            height: 640,
+            syncScrolling: "single",
+            path: "/lib/editor.md/lib/"
         });
-        dropzone.on("success", function (obj, link) {
-            testEditor.insertValue("![](" + link + ")");
+    });
+
+    $("#tags").on("click", "input.delete", function () {
+        $(this).detach();
+    });
+
+    $(document).ready(function () {
+        $("#tag").keydown(function (event) {
+            if (event.keyCode == 32) {
+                var newbutton = document.createElement("input");
+                newbutton.type = "button";
+                newbutton.className = "btn btn-default delete";
+                newbutton.defaultValue = $("#tag").val();
+                newbutton.style = "margin:7px";
+                $("#tags").prepend(newbutton);
+                $("#tag").val("");
+            }
         });
 
-        var testEditor;
-        $(function () {
-            testEditor = editormd("test-editormd", {
-                width: "100%",
-                height: 640,
-                syncScrolling: "single",
-                path: "/lib/editor.md/lib/"
-            });
+        $("#save").click(function () {
+            $("#save").hide();
+            $("#alert").show();
+            $("#layout1").css("display", "block");
+            var buttons = $(".delete");
+            for (var i = 0; i < buttons.length; i++) {
+                $("#tagsToSend").text($("#tagsToSend").text() + $(buttons[i]).val());
+            }
         });
-    </script>
+
+        $("#close").click(function () {
+            $("#save").show();
+            $("#alert").hide();
+            $("#layout1").css("display", "none");
+        });
+    });
+</script>

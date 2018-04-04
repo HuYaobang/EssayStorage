@@ -11,6 +11,7 @@ namespace EssayStorage.Models.Database
         {
             Comments = new List<Comment>();
             EssayTags = new List<EssayTag>();
+            UserEssayRatings = new List<UserEssayRating>();
         }
 
         public int Id { get; set; }
@@ -21,7 +22,6 @@ namespace EssayStorage.Models.Database
         public DateTime CreationTime { get; set; }
 
         public int VotersCount { get; set; }
-        public int TotalRating { get; set; }
         public double AverageRating { get; set; }
 
         //author
@@ -30,6 +30,7 @@ namespace EssayStorage.Models.Database
 
         public virtual ICollection<Comment> Comments { get; set; }
         public virtual ICollection<EssayTag> EssayTags { get; set; }
+        public virtual ICollection<UserEssayRating> UserEssayRatings { get; set; }
 
         public class DateComparer : IComparer<Essay>
         {

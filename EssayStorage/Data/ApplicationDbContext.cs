@@ -20,6 +20,7 @@ namespace EssayStorage.Data
         {
             modelBuilder.Entity<EssayTag>().HasKey(et => new { et.EssayId, et.TagId });
             modelBuilder.Entity<UserComment>().HasKey(uc => new { uc.UserId, uc.CommentId });
+            modelBuilder.Entity<UserEssayRating>().HasKey(ue => new { ue.UserId, ue.EssayId });
             foreach (var relationship in modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
             {
                 relationship.DeleteBehavior = DeleteBehavior.Restrict;
@@ -35,5 +36,6 @@ namespace EssayStorage.Data
         public DbSet<Tag> Tags { get; set; }
         public DbSet<EssayTag> EssayToTags { get; set; }
         public DbSet<UserComment> UserToLikedComments { get; set; }
+        public DbSet<UserEssayRating> UserEssayRatings { get; set; }
     }
 }

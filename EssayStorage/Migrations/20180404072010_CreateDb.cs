@@ -57,6 +57,7 @@ namespace EssayStorage.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Frequency = table.Column<int>(nullable: false),
                     Name = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -182,7 +183,6 @@ namespace EssayStorage.Migrations
                     Description = table.Column<string>(nullable: true),
                     Name = table.Column<string>(nullable: true),
                     Specialization = table.Column<string>(nullable: true),
-                    TotalRating = table.Column<int>(nullable: false),
                     UserId = table.Column<string>(nullable: true),
                     VotersCount = table.Column<int>(nullable: false)
                 },
@@ -242,6 +242,31 @@ namespace EssayStorage.Migrations
                         name: "FK_EssayToTags_Tags_TagId",
                         column: x => x.TagId,
                         principalTable: "Tags",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserEssayRatings",
+                columns: table => new
+                {
+                    UserId = table.Column<string>(nullable: false),
+                    EssayId = table.Column<int>(nullable: false),
+                    Rating = table.Column<double>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserEssayRatings", x => new { x.UserId, x.EssayId });
+                    table.ForeignKey(
+                        name: "FK_UserEssayRatings_Essays_EssayId",
+                        column: x => x.EssayId,
+                        principalTable: "Essays",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_UserEssayRatings_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -332,6 +357,11 @@ namespace EssayStorage.Migrations
                 column: "TagId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_UserEssayRatings_EssayId",
+                table: "UserEssayRatings",
+                column: "EssayId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_UserToLikedComments_CommentId",
                 table: "UserToLikedComments",
                 column: "CommentId");
@@ -356,6 +386,9 @@ namespace EssayStorage.Migrations
 
             migrationBuilder.DropTable(
                 name: "EssayToTags");
+
+            migrationBuilder.DropTable(
+                name: "UserEssayRatings");
 
             migrationBuilder.DropTable(
                 name: "UserToLikedComments");

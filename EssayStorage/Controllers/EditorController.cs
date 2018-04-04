@@ -29,6 +29,37 @@ namespace EssayStorage.Controllers
         }
 
         [HttpPost]
+        public async Task<double?> SetRating(int rating, int essayId)
+        {
+            if (rating < 1 || rating > 5)
+                return null;
+            var user = await userManager.GetUserAsync(User);
+            if (user == null)
+                return null;
+            var essay = db.Essays.Where(e => e.Id == essayId).FirstOrDefault();
+            if (essay == null)
+                return null;
+            var userEssayRating = db.UserEssayRatings.Where(uer => uer.EssayId == essayId && uer.UserId == user.Id).FirstOrDefault();
+            if (userEssayRating == null)
+            {
+                db.UserEssayRatings.Add(new UserEssayRating { EssayId = essayId, UserId = user.Id, Rating = rating });
+                double total = essay.AverageRating * essay.VotersCount + rating;
+                essay.VotersCount++;
+                essay.AverageRating = total / essay.VotersCount;
+            }
+            else
+            {
+                db.UserEssayRatings.Update(userEssayRating);
+                double total = essay.AverageRating * essay.VotersCount - userEssayRating.Rating + rating;
+                essay.AverageRating = total / essay.VotersCount;
+                userEssayRating.Rating = rating;
+                db.UserEssayRatings.Update(userEssayRating);
+            }
+            await db.SaveChangesAsync();
+            return Math.Round(essay.AverageRating, 1);
+        }
+
+        [HttpPost]
         public async Task<string> SavePicture(IFormFile file)
         {
             if (file != null) {
@@ -66,11 +97,10 @@ namespace EssayStorage.Controllers
             };
            
             return View(model);
-            
         }
         
         [HttpPost]
-        public IActionResult UpdateEssay(CreateEssayViewModel model)
+        public async Task<IActionResult> UpdateEssay(CreateEssayViewModel model)
         {
             if(ModelState.IsValid)
             {
@@ -80,11 +110,11 @@ namespace EssayStorage.Controllers
                 essay.Specialization = model.Specialization;
                 essay.Content = model.Content;
                 db.Update(essay);
-                db.SaveChanges();
+                await db.SaveChangesAsync();
             }
             return View("SaveEssay");
-
         }
+
         [HttpPost]
         public async Task<IActionResult> SaveEssay(CreateEssayViewModel model)
         {
@@ -98,7 +128,6 @@ namespace EssayStorage.Controllers
                     Specialization = model.Specialization,
                     Content = model.Content,
                     CreationTime = DateTime.Now,
-                    TotalRating = 0,
                     VotersCount = 0,
                     AverageRating = 0,
                     UserId = user.Id

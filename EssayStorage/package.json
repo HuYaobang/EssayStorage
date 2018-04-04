@@ -5,7 +5,8 @@
   "devDependencies": {
     "editor.md": "1.5.0",
     "font-awesome": "4.7.0",
-    "dropzone": "5.4.0"
+    "dropzone": "5.4.0",
+    "bootstrap-rating": "0.0.1"
   },
   "dependencies": {}
 }

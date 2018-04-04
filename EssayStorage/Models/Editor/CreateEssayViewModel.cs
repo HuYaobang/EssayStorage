@@ -9,6 +9,9 @@ namespace EssayStorage.Models.AccountViewModels
     public class CreateEssayViewModel
     {
         [Required]
+        public string Tags { get; set; }
+
+        [Required]
         [Display(Name = "Name")]
         public string Name { get; set; }
 

@@ -1,0 +1,86 @@
+{
+  "_args": [
+    [
+      "bootstrap-rating@0.0.1",
+      "C:\\Users\\Rodion\\Desktop\\itra\\projects\\EssayStorage\\EssayStorage"
+    ]
+  ],
+  "_from": "bootstrap-rating@0.0.1",
+  "_id": "bootstrap-rating@0.0.1",
+  "_inCache": true,
+  "_location": "/bootstrap-rating",
+  "_nodeVersion": "5.5.0",
+  "_npmOperationalInternal": {
+    "host": "packages-16-east.internal.npmjs.com",
+    "tmp": "tmp/bootstrap-rating-0.0.1.tgz_1461048992481_0.6068514371290803"
+  },
+  "_npmUser": {
+    "email": "lallement@gmail.com",
+    "name": "jlallement"
+  },
+  "_npmVersion": "3.6.0",
+  "_phantomChildren": {},
+  "_requested": {
+    "name": "bootstrap-rating",
+    "raw": "bootstrap-rating@0.0.1",
+    "rawSpec": "0.0.1",
+    "scope": null,
+    "spec": "0.0.1",
+    "type": "version"
+  },
+  "_requiredBy": [
+    "#DEV:/"
+  ],
+  "_resolved": "https://registry.npmjs.org/bootstrap-rating/-/bootstrap-rating-0.0.1.tgz",
+  "_shasum": "40bb97f8fa8950f3791e9a1b046df4f710df0dc0",
+  "_shrinkwrap": null,
+  "_spec": "bootstrap-rating@0.0.1",
+  "_where": "C:\\Users\\Rodion\\Desktop\\itra\\projects\\EssayStorage\\EssayStorage",
+  "author": {
+    "name": "dreyescat"
+  },
+  "bugs": {
+    "url": "https://github.com/dreyescat/bootstrap-rating/issues"
+  },
+  "dependencies": {},
+  "description": "A small jQuery plugin that turns an input field into a highly customizable rating component",
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-contrib-connect": "^0.8.0",
+    "grunt-contrib-uglify": "^0.5.1",
+    "grunt-gh-pages": "^0.9.1"
+  },
+  "directories": {},
+  "dist": {
+    "shasum": "40bb97f8fa8950f3791e9a1b046df4f710df0dc0",
+    "tarball": "https://registry.npmjs.org/bootstrap-rating/-/bootstrap-rating-0.0.1.tgz"
+  },
+  "homepage": "https://github.com/dreyescat/bootstrap-rating",
+  "installable": true,
+  "keywords": [
+    "bootstrap",
+    "component",
+    "fontawesome",
+    "jquery",
+    "plugin",
+    "rating"
+  ],
+  "license": "MIT",
+  "main": "bootstrap-rating.js",
+  "maintainers": [
+    {
+      "name": "jlallement",
+      "email": "lallement@gmail.com"
+    }
+  ],
+  "name": "bootstrap-rating",
+  "optionalDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dreyescat/bootstrap-rating.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "version": "0.0.1"
+}

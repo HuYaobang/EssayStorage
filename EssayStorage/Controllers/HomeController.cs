@@ -25,7 +25,7 @@ namespace EssayStorage.Controllers
 
         public IActionResult Best()
         {
-            List<Essay> essays = db.Essays.OrderBy(essay => essay.AverageRating).ToList();
+            List<Essay> essays = db.Essays.OrderByDescending(essay => essay.AverageRating).ToList();
             ViewData.Add("essays", essays);
             return View("Index");
         }

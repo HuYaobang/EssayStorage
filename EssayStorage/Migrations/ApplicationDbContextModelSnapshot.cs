@@ -124,8 +124,6 @@ namespace EssayStorage.Migrations
 
                     b.Property<string>("Specialization");
 
-                    b.Property<int>("TotalRating");
-
                     b.Property<string>("UserId");
 
                     b.Property<int>("VotersCount");
@@ -155,6 +153,8 @@ namespace EssayStorage.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<int>("Frequency");
+
                     b.Property<string>("Name");
 
                     b.HasKey("Id");
@@ -173,6 +173,21 @@ namespace EssayStorage.Migrations
                     b.HasIndex("CommentId");
 
                     b.ToTable("UserToLikedComments");
+                });
+
+            modelBuilder.Entity("EssayStorage.Models.Database.UserEssayRating", b =>
+                {
+                    b.Property<string>("UserId");
+
+                    b.Property<int>("EssayId");
+
+                    b.Property<double>("Rating");
+
+                    b.HasKey("UserId", "EssayId");
+
+                    b.HasIndex("EssayId");
+
+                    b.ToTable("UserEssayRatings");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -321,6 +336,19 @@ namespace EssayStorage.Migrations
 
                     b.HasOne("EssayStorage.Models.ApplicationUser", "User")
                         .WithMany("LikedComments")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict);
+                });
+
+            modelBuilder.Entity("EssayStorage.Models.Database.UserEssayRating", b =>
+                {
+                    b.HasOne("EssayStorage.Models.Database.Essay", "Essay")
+                        .WithMany("UserEssayRatings")
+                        .HasForeignKey("EssayId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("EssayStorage.Models.ApplicationUser", "User")
+                        .WithMany("UserEssayRatings")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict);
                 });

@@ -7,13 +7,13 @@ using Microsoft.AspNetCore.Identity;
 
 namespace EssayStorage.Models
 {
-    // Add profile data for application users by adding properties to the ApplicationUser class
     public class ApplicationUser : IdentityUser
     {
         public ApplicationUser()
         {
             Essays = new List<Essay>();
             LikedComments = new List<UserComment>();
+            UserEssayRatings = new List<UserEssayRating>();
         }
 
         public string UserInfo { get; set; }
@@ -22,5 +22,6 @@ namespace EssayStorage.Models
 
         public virtual ICollection<Essay> Essays { get; set; }
         public virtual ICollection<UserComment> LikedComments { get; set; }
+        public virtual ICollection<UserEssayRating> UserEssayRatings { get; set; }
     }
 }

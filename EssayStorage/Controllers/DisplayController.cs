@@ -26,12 +26,21 @@ namespace EssayStorage.Controllers
             this.userManager = userManager;
         }
 
-        public IActionResult Essay(int essayId)
+        public async Task<IActionResult> Essay(int essayId)
         {
             Essay essay = db.Essays.Where(e => e.Id == essayId).FirstOrDefault();
             if (essay == null)
             {
                 return View("essaynotfound");
+            }
+            var user = await userManager.GetUserAsync(User);
+            if (user != null)
+            {
+                var userrating = db.UserEssayRatings.Where(uer => uer.EssayId == essayId && uer.UserId == user.Id).FirstOrDefault();
+                if (userrating == null)
+                    ViewData.Add("user-rating", 0);
+                else
+                    ViewData.Add("user-rating", userrating.Rating);
             }
             return View(essay);
         }
