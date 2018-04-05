@@ -1,4 +1,5 @@
-﻿using EssayStorage.Data;
+﻿using EmailApp.Services;
+using EssayStorage.Data;
 using EssayStorage.Models;
 using EssayStorage.Models.Database;
 using EssayStorage.Models.ManageViewModels;
@@ -49,6 +50,33 @@ namespace EssayStorage.Controllers
             _urlEncoder = urlEncoder;
             _db = db;
             _appEnvironment = hostingEnvironment;
+        }
+
+        /*[HttpPost]
+        public async Task<bool> ChangeEmailAndSendConfirmation(string email)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            user.Email = email;
+            try { await _db.SaveChangesAsync(); }
+            catch (Exception) { return false; }
+
+            return await SendConfirmationEmail();
+        }*/
+
+        [HttpPost]
+        public async Task<bool> SendConfirmationEmail()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+            var callbackUrl = Url.Action(
+                "ConfirmEmail",
+                "Account",
+                new { userId = user.Id, code = code },
+                protocol: HttpContext.Request.Scheme);
+            EmailService emailService = new EmailService();
+            await emailService.SendEmailAsync(user.Email, "Confirm your account",
+                $"Подтвердите регистрацию, перейдя по ссылке: <a href='{callbackUrl}'>link</a>");
+            return true;
         }
 
         [TempData]

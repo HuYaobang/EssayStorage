@@ -137,7 +137,7 @@ namespace EssayStorage.Controllers
                     await emailService.SendEmailAsync(model.Email, "Confirm your account",
                         $"Подтвердите регистрацию, перейдя по ссылке: <a href='{callbackUrl}'>link</a>");
 
-                    // await _signInManager.SignInAsync(user, isPersistent: false);
+                    await _signInManager.SignInAsync(user, isPersistent: true);
                     return RedirectToLocal(returnUrl);
                     //_logger.LogInformation("User created a new account with password.");
 

@@ -1,15 +1,19 @@
 ﻿@using EssayStorage.Models.Database
+@inject SignInManager<ApplicationUser> SignInManager
 @{
     ViewData["Title"] = "User essays";
     ViewData.AddActivePage(ManageNavPages.UserEssays);
+    var user = await SignInManager.UserManager.GetUserAsync(User);
 }
 
 <link rel="stylesheet" href="~/lib/datatables/media/css/jquery.dataTables.min.css" />
 <script src="~/lib/datatables/media/js/jquery.dataTables.min.js"></script>
 
-<form action="../Editor/NewEssay">
-    <button style="margin-top: 10px;" type="submit" class="btn btn-success btn-lg">+ Create essay</button>
-</form>
+@if (user.EmailConfirmed)
+{
+    <form action="../Editor/NewEssay">
+        <button style="margin-top: 10px;" type="submit" class="btn btn-success btn-lg">+ Create essay</button>
+    </form>
 <center><h3>Your essays</h3></center>
 <div class="row">
     <div class="table-responsive">
@@ -25,22 +29,23 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (Essay essay in (List<Essay>)ViewData["essays"]) {
-                <tr>
-                    <td class="odd" style="vertical-align: middle;">@Html.ActionLink(essay.Name, "essay","display", new { essayId = essay.Id })</td>
-                    <td class="even" style="vertical-align: middle;">@essay.Description</td>
-                    <td style="vertical-align: middle;">@essay.Specialization</td>
-                    <td style="vertical-align: middle;">@essay.AverageRating</td>
-                    <td style="vertical-align: middle;">@essay.CreationTime</td>
-                    <td style="vertical-align: middle;">
-                        <center>
-                            <form method="post" action="../Editor/EditEssay">
-                                <input name="essayId" value="@essay.Id" style="display:none;" />
-                                <button class="btn">Edit</button>
-                            </form>
-                        </center>
-                    </td>
-                </tr>
+                @foreach (Essay essay in (List<Essay>)ViewData["essays"])
+                {
+                    <tr>
+                        <td class="odd" style="vertical-align: middle;">@Html.ActionLink(essay.Name, "essay", "display", new { essayId = essay.Id })</td>
+                        <td class="even" style="vertical-align: middle;">@essay.Description</td>
+                        <td style="vertical-align: middle;">@essay.Specialization</td>
+                        <td style="vertical-align: middle;">@essay.AverageRating</td>
+                        <td style="vertical-align: middle;">@essay.CreationTime</td>
+                        <td style="vertical-align: middle;">
+                            <center>
+                                <form method="post" action="../Editor/EditEssay">
+                                    <input name="essayId" value="@essay.Id" style="display:none;" />
+                                    <button class="btn">Edit</button>
+                                </form>
+                            </center>
+                        </td>
+                    </tr>
                 }
             </tbody>
         </table>
@@ -60,6 +65,28 @@
         "stripeClasses": ['table-line-odd', null]
     });
 </script>
+}
+else
+{
+    <center>
+        <span style="display: inline-block; min-width: 251px;" class="label label-default">У вас нет доступа без подтверждения емайл</span>
+        <br />
+        <button id="confirmation-email-sender" style="margin-top: 3px;" class="btn btn-default">Отправить письмо подтверждения</button>
+        <br />
+        <span style="display: inline-block; min-width: 251px;" class="label label-default">на емайл @user.Email</span>
+    </center>
+    
+    <script>
+        $('#confirmation-email-sender').on('click', function (){
+            $.post(
+                '/Manage/SendConfirmationEmail',
+                function (response) {
+                    alert('Email was sended');
+                }
+            )
+        });
+    </script>
+}
 
 @section Scripts {
     @await Html.PartialAsync("_ValidationScriptsPartial")
