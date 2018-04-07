@@ -6,14 +6,38 @@
 
 <div class="row" style="margin-top: 20px;">
     <div class="container">
-        <!-- Tags cloud -->
-        <div class="col-md-3 col-md-push-9" style="background-color: aqua; height: 700px;">
-
+        <div class="col-md-3 col-md-push-9 ">
+            <center id="tagCloud" style="margin-bottom:25px"></center>
         </div>
 
+        <script>
+            setClass();
+            $(window).on('resize', function () {
+                setClass();
+            });
+            function setClass(){
+                if (window.matchMedia("(max-width: 767px)").matches) {
+                    $("#tagCloud").removeClass("affix");
+                } else {
+                    $("#tagCloud").addClass("affix");
+                }
+            };
+
+            $.post("Home/GetTagsCloud", function (response) {
+                for (let i = 0; i < response.length; i++) {
+                    var newref = document.createElement("a");
+                    newref.href = "/Search/TagsSearch?Data=" + response[i].tagId;
+                    newref.text = response[i].tagId;
+                    newref.className = "btn btn-default";
+                    newref.style = "margin:4px";
+                    $("#tagCloud").append(newref);
+                };
+            });
+        </script>
+
         <div class="col-md-9 col-md-pull-3">
-                @foreach (var essay in (List<Essay>)ViewData["essays"])
-                {
+            @foreach (var essay in (List<Essay>)ViewData["essays"])
+            {
                 <div class="list-group">
                     <a class="list-group-item" href="../Display/Essay?essayId=@essay.Id">
                         <center><div style="font-size: 18px; padding: 0 30px;">@essay.Name</div></center>
@@ -21,22 +45,22 @@
                         <div style="padding: 10px 10px 5px 10px; font-size: 13px;"><i>@essay.Specialization</i></div>
                         <div style="float: right;" id="colorstar">
                             <span style="color: gray;">@Math.Round(essay.AverageRating, 1)/5&nbsp;</span>
-                        @{
-                            int n = (int)Math.Round(essay.AverageRating);
-                            for (int i = 0; i < n; i++)
-                            {
-                                <span class="glyphicon .glyphicon-star-empty glyphicon-star"></span>
+                            @{
+                                int n = (int)Math.Round(essay.AverageRating);
+                                for (int i = 0; i < n; i++)
+                                {
+                                    <span class="glyphicon .glyphicon-star-empty glyphicon-star"></span>
+                                }
+                                for (int i = n; i < 5; i++)
+                                {
+                                    <span class="glyphicon .glyphicon-star-empty glyphicon-star-empty"></span>
+                                }
                             }
-                            for (int i = n; i < 5; i++)
-                            {
-                                <span class="glyphicon .glyphicon-star-empty glyphicon-star-empty"></span>
-                            }
-                        }
                         </div>
                         <div style="padding-left: 10px;"><i>@essay.CreationTime</i></div>
                     </a>
                 </div>
-                }
+            }
         </div>
     </div>
 </div>

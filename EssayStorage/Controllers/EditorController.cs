@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using EssayStorage.Data;
 using EssayStorage.Models;
@@ -62,7 +63,8 @@ namespace EssayStorage.Controllers
         [HttpPost]
         public async Task<string> SavePicture(IFormFile file)
         {
-            if (file != null) {
+            if (file != null)
+            {
                 string path = String.Format("/images/pictures/{0}.png", Rand.GetRandomEnglishLiteralString(64));
                 using (var filestream = new FileStream(appEnvironment.WebRootPath + path, FileMode.Create))
                     await file.CopyToAsync(filestream);
@@ -81,6 +83,17 @@ namespace EssayStorage.Controllers
         public IActionResult EditEssay(int essayId)
         {
             Essay essay = db.Essays.Where(e => e.Id == essayId).FirstOrDefault();
+            var essayTag = db.EssayToTags.Where(e => e.EssayId == essayId).ToList();
+            StringBuilder str = new StringBuilder("");
+            if (essayTag != null)
+            {
+                foreach (var temporary in essayTag)
+                {
+                    str.Append(temporary.TagId + " ");
+                }
+            }
+            else str.Append("1");
+
             if (essay != null)
             {
                 var model = new CreateEssayViewModel
@@ -89,27 +102,12 @@ namespace EssayStorage.Controllers
                     Description = essay.Description,
                     Name = essay.Name,
                     Specialization = essay.Specialization,
-                    Id = essay.Id
+                    Id = essayId,
+                    Tags = Convert.ToString(str)
                 };
                 return View(model);
             }
             return null;
-        }
-        
-        [HttpPost]
-        public async Task<IActionResult> UpdateEssay(CreateEssayViewModel model)
-        {
-            if(ModelState.IsValid)
-            {
-                Essay essay = db.Essays.Where(e => e.Id == model.Id).First();
-                essay.Name = model.Name; 
-                essay.Description = model.Description;
-                essay.Specialization = model.Specialization;
-                essay.Content = model.Content;
-                db.Update(essay);
-                await db.SaveChangesAsync();
-            }
-            return View("SaveEssay");
         }
 
         [HttpPost]
@@ -117,23 +115,99 @@ namespace EssayStorage.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = await userManager.GetUserAsync(User);
-                db.Essays.Add(new Essay
-                {
-                    Name = model.Name,
-                    Description = model.Description,
-                    Specialization = model.Specialization,
-                    Content = model.Content,
-                    CreationTime = DateTime.Now,
-                    VotersCount = 0,
-                    AverageRating = 0,
-                    UserId = user.Id
-                });
-                await userManager.UpdateAsync(user);
+                string[] tags = model.Tags.Split(" ");
 
-                return View();
+                if (db.Essays.Any(e => e.Id == model.Id))
+                {
+                    Essay essay = db.Essays.Where(e => e.Id == model.Id).First();
+                    essay.Name = model.Name;
+                    essay.Description = model.Description;
+                    essay.Specialization = model.Specialization;
+                    essay.Content = model.Content;
+                    db.Update(essay);
+                    await db.SaveChangesAsync();
+                    var tagsToEssay = db.EssayToTags.Where(e => e.EssayId == model.Id).ToList();
+                    foreach (var temporary in tagsToEssay)
+                    {
+                        if (tags.Contains(temporary.TagId))
+                            continue;
+                        else
+                        {
+                            db.EssayToTags.Remove(temporary);
+                            var updatedTag = db.Tags.Where(e => e.TagId == temporary.TagId).First();
+                            if (updatedTag.Frequency == 1)
+                            {
+                                db.Tags.Remove(updatedTag);
+                            }
+                            else
+                            {
+                                updatedTag.Frequency--;
+                                db.Tags.Update(updatedTag);
+                            }
+                        }
+                    }
+                    await db.SaveChangesAsync();
+                    foreach (var temporary in tags)
+                    {
+                        Tag tag = db.Tags.Where(t => t.TagId == temporary).FirstOrDefault();
+                        if (tag != null)
+                        {
+                            tag.Frequency++;
+                            db.Tags.Update(tag);
+                        }
+                        else
+                        {
+                            db.Tags.Add(new Tag { TagId = temporary, Frequency = 1 });
+                        }
+                        if (db.EssayToTags.Where(e => e.TagId == temporary && e.EssayId == essay.Id).FirstOrDefault() == null)
+                            db.EssayToTags.Add(new EssayTag { TagId = temporary, EssayId = essay.Id });
+                        await db.SaveChangesAsync();
+                    }
+                    await db.SaveChangesAsync();
+                }
+                else
+                {
+                    var user = await userManager.GetUserAsync(User);
+                    db.Essays.Add(new Essay
+                    {
+                        Name = model.Name,
+                        Description = model.Description,
+                        Specialization = model.Specialization,
+                        Content = model.Content,
+                        CreationTime = DateTime.Now,
+                        VotersCount = 0,
+                        AverageRating = 0,
+                        UserId = user.Id
+                    });
+                    await db.SaveChangesAsync();
+                    var essay = db.Essays.Where
+                        (
+                            t =>
+                            t.Name == model.Name &&
+                            t.Specialization == model.Specialization &&
+                            t.Description == model.Description
+                        )
+                        .FirstOrDefault();
+                    foreach (var temporary in tags)
+                    {
+                        Tag tag = db.Tags.Where(t => t.TagId == temporary).FirstOrDefault();
+                        if (tag != null)
+                        {
+                            tag.Frequency++;
+                            db.Tags.Update(tag);
+                        }
+                        else
+                        {
+                            db.Tags.Add(new Tag { TagId = temporary, Frequency = 1 });
+                        }
+                        if (db.EssayToTags.Where(e => e.TagId == temporary && e.EssayId == essay.Id).FirstOrDefault() == null)
+                            db.EssayToTags.Add(new EssayTag { TagId = temporary, EssayId = essay.Id });
+                        await db.SaveChangesAsync();
+                    }
+                    await userManager.UpdateAsync(user);
+                }
             }
-            return View("EditEssay");
+            return RedirectToAction("SaveEssay");
         }
     }
 }

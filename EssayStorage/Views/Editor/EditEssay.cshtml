@@ -1,5 +1,5 @@
 ﻿@model CreateEssayViewModel
-
+@using EssayStorage.Models.Database
 <meta charset="utf-8" />
 <link rel="stylesheet" href="~/lib/editor.md/examples/css/style.css" />
 <link rel="stylesheet" href="~/lib/editor.md/css/editormd.css" />
@@ -43,7 +43,7 @@
             <div id="close" style="cursor:pointer; font-size:40px; position:absolute;top:15px;right:7px;height:40px;width:50px;color:red">X</div>
             <button type="submit" id="send" class="btn" style="position:absolute;bottom:10px;width:100px;left:50%;margin-left:-50px">Send</button>
         </div>
-
+        <input asp-for="Id" value="@Model.Id" style="display:none">
     </form>
 
 </div>
@@ -59,7 +59,10 @@
             width: "100%",
             height: 640,
             syncScrolling: "single",
-            path: "/lib/editor.md/lib/"
+            path: "/lib/editor.md/lib/",
+            toolbarIcons: function () {
+                return ["undo", "redo", "|", "bold", "del", "italic", "quote", "|", "h1", "h2", "h3", "h4", "h5", "h6", "|", "list-ul", "list-ol", "hr", "|", "link", "image", "|", "table", "code", "||", "watch", "preview", "testIcon"]
+            }
         });
     });
 
@@ -67,7 +70,22 @@
         $(this).detach();
     });
 
+
     $(document).ready(function () {
+        var tags = $("#tagsToSend").val();
+        $("#tagsToSend").val("");
+        if (tags != "1") {
+            var arr = tags.split(' ');
+            for (var j = 1; j < arr.length - 1; j++) {
+                var newbutton = document.createElement("input");
+                newbutton.type = "button";
+                newbutton.className = "btn btn-default delete";
+                newbutton.defaultValue = arr[j];
+                newbutton.style = "margin:7px";
+                $("#tags").prepend(newbutton);
+            }
+        }
+
         $("#tag").keydown(function (event) {
             if (event.keyCode == 32) {
                 var newbutton = document.createElement("input");
@@ -86,8 +104,8 @@
             $("#layout1").css("display", "block");
             var buttons = $(".delete");
             for (var i = 0; i < buttons.length; i++) {
-                $("#tagsToSend").text($("#tagsToSend").text() + $(buttons[i]).val());
-            }
+                $("#tagsToSend").val($("#tagsToSend").val() + " " + $(buttons[i]).val());
+            };
         });
 
         $("#close").click(function () {

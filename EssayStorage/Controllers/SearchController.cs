@@ -50,7 +50,7 @@ namespace EssayStorage.Controllers
                 .ToList();
 
             List<Essay> essays_ = new List<Essay>();
-            foreach(var comment in comments)
+            foreach (var comment in comments)
             {
                 essays_.Add
                     (
@@ -65,6 +65,19 @@ namespace EssayStorage.Controllers
             }
 
             List<Essay> result = essays.Union(essays_).ToList();
+            ViewData.Add("essays", result);
+            return View("SearchResult");
+        }
+
+        [HttpGet]
+        public IActionResult TagsSearch(string Data)
+        {
+            var essayTags = db.EssayToTags.Where(e => e.TagId == Data).ToList();
+            List<Essay> result = new List<Essay>();
+            foreach (var temporary in essayTags)
+            {
+                result.Add(db.Essays.Where(e => e.Id == temporary.EssayId).FirstOrDefault());
+            }
             ViewData.Add("essays", result);
             return View("SearchResult");
         }

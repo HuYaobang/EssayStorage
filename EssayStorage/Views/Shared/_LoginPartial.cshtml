@@ -8,6 +8,11 @@
 {
     <form asp-area="" asp-controller="Search" asp-action="StartSearch" method="post" class="navbar-right">
         <ul class="nav navbar-nav navbar-right">
+            @if((await UserManager.GetUserAsync(User)).IsAdmin)
+            {
+                 <li><a asp-area="" asp-controller="Admin" asp-action="AdminPanel">Admin panel</a></li>
+            }
+           
             <li>
                 <input type="search" class="form-control" placeholder="..." name="Data" autocomplete="off" style="margin-top:7px" />
             </li>

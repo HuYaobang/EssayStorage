@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Identity;
 using EssayStorage.Models.Database;
 
 namespace EssayStorage.Controllers
-{   
+{
 
     public class HomeController : Controller
     {
@@ -42,5 +42,13 @@ namespace EssayStorage.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+        [HttpPost]
+        public List<Tag> GetTagsCloud()
+        {
+            return db.Tags.OrderByDescending(t => t.Frequency).Skip(1).Take(20).ToList();
+        }
+
+
     }
 }
