@@ -1,20 +1,9 @@
 ﻿@using EssayStorage.Models.Database
-@inject SignInManager<ApplicationUser> SignInManager
 @{
-    ViewData["Title"] = "User essays";
-    ViewData.AddActivePage(ManageNavPages.UserEssays);
-    var user = await SignInManager.UserManager.GetUserAsync(User);
+    ViewData["Title"] = "GetUserEssays";
 }
-
 <link rel="stylesheet" href="~/lib/datatables/media/css/jquery.dataTables.min.css" />
 <script src="~/lib/datatables/media/js/jquery.dataTables.min.js"></script>
-
-@if (user.EmailConfirmed)
-{
-    <form action="../Editor/NewEssay">
-        <button style="margin-top: 10px;" type="submit" class="btn btn-success btn-lg">+ Create essay</button>
-    </form>
-<center><h3>Your essays</h3></center>
 <div class="row">
     <div class="table-responsive">
         <table id="essays-table" class="">
@@ -69,34 +58,8 @@
         "info": false,
         "aoColumnDefs": [{
             "bSortable": false,
-            "aTargets": [1, 5, 6]
+            "aTargets": [5, 6]
         }],
         "stripeClasses": ['table-line-odd', null]
     });
 </script>
-}
-else
-{
-    <center>
-        <span style="display: inline-block; min-width: 251px;" class="label label-default">У вас нет доступа без подтверждения емайл</span>
-        <br />
-        <button id="confirmation-email-sender" style="margin-top: 3px;" class="btn btn-default">Отправить письмо подтверждения</button>
-        <br />
-        <span style="display: inline-block; min-width: 251px;" class="label label-default">на емайл @user.Email</span>
-    </center>
-    
-    <script>
-        $('#confirmation-email-sender').on('click', function (){
-            $.post(
-                '/Manage/SendConfirmationEmail',
-                function (response) {
-                    alert('Email was sended');
-                }
-            )
-        });
-    </script>
-}
-
-@section Scripts {
-    @await Html.PartialAsync("_ValidationScriptsPartial")
-}

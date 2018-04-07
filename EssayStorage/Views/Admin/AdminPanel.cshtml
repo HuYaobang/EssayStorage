@@ -3,5 +3,95 @@
     ViewData["Title"] = "AdminPanel";
 }
 
-<h2>AdminPanel</h2>
+<link rel="stylesheet" href="~/lib/datatables/media/css/jquery.dataTables.min.css" />
+<script src="~/lib/datatables/media/js/jquery.dataTables.min.js"></script>
 
+<div class="row" style="margin:20px">
+    <div class="table-responsive">
+        <table id="users-table" class="">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Is admin</th>
+                    <th>Is blocked</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (ApplicationUser user in (List<ApplicationUser>)ViewData["users"])
+                {
+                    <tr>                        
+                        <td class="odd" style="vertical-align: middle;">
+                            
+                             @user.UserName
+                        </td>
+                        <td class="even" style="vertical-align: middle;">@user.Email</td>
+                        @if(user.IsAdmin)
+                         {
+                            <td style="vertical-align: middle;">
+                                <input class="form-check-input" type="checkbox" value="" checked="checked" disabled>
+                            </td>
+                            <td style="vertical-align: middle;">
+                                <input class="form-check-input" type="checkbox" value="" disabled>
+                            </td>
+                         }
+                         else
+                         {
+                            <td style="vertical-align: middle;">
+                                <input class="form-check-input sendAdmin" id="@user.Id" type="checkbox" value="@user.IsAdmin">
+                            </td>
+                            @if(user.IsBlocked)
+                            {
+                             <td style="vertical-align: middle;">
+                                <input class="form-check-input sendBlock" id="@user.Id" type="checkbox" checked value="@user.IsBlocked">
+                             </td>
+                            }
+                            else
+                            {
+                             <td style="vertical-align: middle;">
+                                <input class="form-check-input sendBlock" id="@user.Id" type="checkbox"  value="@user.IsBlocked">
+                             </td>
+                            }
+
+                         }
+                        <td style="vertical-align: middle;">
+                            <center>
+                                <form method="post" action="GetUserEssays">
+                                    <input name="userId" value="@user.Id" style="display:none;" />
+                                    <button class="btn">Show</button>
+                                </form>
+                            </center>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    $(".sendAdmin").on("click", function () {
+        $.post("SetAdmin", { userId: $(this).attr("id") }, function (response) { 
+            alert("User is admin now");
+        });
+    })
+
+    $(".sendBlock").on("click", function () {
+        $.post("SetBlock", { userId: $(this).attr("id") }, function (response) {
+            alert("User block status is changed");
+        });
+    })
+
+    $('#users-table').DataTable({
+        "lengthMenu": false,
+        "lengthChange": false,
+        "paging": false,
+        "info": false,
+        "aoColumnDefs": [{
+            "bSortable": false,
+            "aTargets": [2, 3, 4]
+        }],
+        "stripeClasses": ['table-line-odd', null]
+    });
+</script>

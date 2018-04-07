@@ -19,9 +19,14 @@
             <li>
                 <button type="submit" class="form-control" style="margin-top:7px;margin-left:2px;margin-right:10px">Search</button>
             </li>
-            <li>
-                <a asp-area="" asp-controller="Manage" asp-action="Index" title="Manage">Account</a>
-            </li>
+            @if((await UserManager.GetUserAsync(User)).IsBlocked)
+            {
+                 <li><a asp-area="" id="blocked" title="Manage">Account</a></li>
+            }
+            else
+            {
+                 <li><a asp-area="" asp-controller="Manage" asp-action="Index" title="Manage">Account</a></li>
+            }           
             <li><a asp-area="" asp-controller="Account" asp-action="Logout">Log out</a></li>
 
         </ul>
@@ -43,3 +48,8 @@ else
         </ul>
     </form>
 }
+<script>
+    $("#blocked").click(function () {
+        alert("Your account is blocked. Please, write a message to supports e-mail: essay.storage1337@gmail.com");
+    });
+</script>

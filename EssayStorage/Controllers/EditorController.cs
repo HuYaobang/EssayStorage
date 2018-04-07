@@ -111,6 +111,38 @@ namespace EssayStorage.Controllers
         }
 
         [HttpPost]
+        public async Task<IActionResult> DeleteEssay(int essayId)
+        {
+            Essay essay = db.Essays.Where(e => e.Id == essayId).FirstOrDefault();
+            var comments = db.Comments.Where(c => c.EssayId == essayId).ToList();
+            foreach(var comment in comments)
+            {
+                db.Comments.Remove(comment);
+            }
+            await db.SaveChangesAsync();
+            var essayTags = db.EssayToTags.Where(et => et.EssayId == essayId).ToList();
+            foreach(var essayTag in essayTags)
+            {
+                Tag tag = db.Tags.Where(t => t.TagId == essayTag.TagId).FirstOrDefault();
+                if (tag.Frequency == 1)
+                {
+                    db.Tags.Remove(tag);
+                }
+                else
+                {
+                    tag.Frequency--;
+                    db.Tags.Update(tag);
+                }
+                db.Tags.Update(tag);
+                db.EssayToTags.Remove(essayTag);
+            }
+            await db.SaveChangesAsync();
+            db.Essays.Remove(essay);
+            await db.SaveChangesAsync();
+            return View();
+        }
+
+        [HttpPost]
         public async Task<IActionResult> SaveEssay(CreateEssayViewModel model)
         {
             if (ModelState.IsValid)
@@ -207,7 +239,7 @@ namespace EssayStorage.Controllers
                     await userManager.UpdateAsync(user);
                 }
             }
-            return RedirectToAction("SaveEssay");
+            return View("SaveEssay");
         }
     }
 }

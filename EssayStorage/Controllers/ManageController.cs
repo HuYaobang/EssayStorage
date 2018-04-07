@@ -51,18 +51,7 @@ namespace EssayStorage.Controllers
             _db = db;
             _appEnvironment = hostingEnvironment;
         }
-
-        /*[HttpPost]
-        public async Task<bool> ChangeEmailAndSendConfirmation(string email)
-        {
-            var user = await _userManager.GetUserAsync(User);
-            user.Email = email;
-            try { await _db.SaveChangesAsync(); }
-            catch (Exception) { return false; }
-
-            return await SendConfirmationEmail();
-        }*/
-
+        
         [HttpPost]
         public async Task<bool> SendConfirmationEmail()
         {
@@ -129,6 +118,21 @@ namespace EssayStorage.Controllers
             {
                 throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
+            string error;
+            var email = user.Email;
+            if(model.Email != email)
+            {
+                try
+                {
+                    await _userManager.SetEmailAsync(user, model.Email);
+                }
+                catch
+                {
+                    error = "e-mail";
+                    ViewData.Add("error", error);
+                    return View("ManageError");
+                }
+            }
 
             var userName = user.UserName;
             if (model.Username != userName)
@@ -137,7 +141,9 @@ namespace EssayStorage.Controllers
                 
                 if (!setUserNameResult.Succeeded)
                 {
-                    throw new ApplicationException($"Unexpected error occurred");
+                    error = "username";
+                    ViewData.Add("error", error);
+                    return View("ManageError");
                 }
             }
 
