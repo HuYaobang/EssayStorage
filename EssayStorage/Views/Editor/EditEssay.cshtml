@@ -3,7 +3,7 @@
 <meta charset="utf-8" />
 <link rel="stylesheet" href="~/lib/editor.md/examples/css/style.css" />
 <link rel="stylesheet" href="~/lib/editor.md/css/editormd.css" />
-<link rel="shortcut icon" href="https://pandao.github.io/editor.md/favicon.ico" type="image/x-icon" />
+<link rel="stylesheet" href="~/lib/jquery-flexdatalist/jquery.flexdatalist.min.css" type="text/css">
 
 <div id="layout" style="margin-top: 15px;">
     <form method="post" action="../Editor/SaveEssay">
@@ -23,34 +23,60 @@
             <input asp-for="Specialization" class="form-control" autocomplete="off" />
             <span asp-validation-for="Specialization" class="text-danger"></span>
         </div>
-
-        <div class="row" id="tags">
-
+        <div id="wrapper">
+            <input asp-for="Tags" type='text'
+                   placeholder='Programming language name'
+                   class='flexdatalist'
+                   data-min-length='1'
+                   multiple='multiple'
+                   list='tag-list'>
+            <datalist id="tag-list"></datalist>
         </div>
-        <div class="row">
-            <input id="tag" type="text" class="form-control" style="width:150px;margin-left:50px;margin-top:20px" />
-        </div>
-        <input asp-for="Tags" style="display:none" id="tagsToSend" />
-
 
         <div id="test-editormd" style="margin-top:20px">
             <textarea asp-for="Content" style="display:none;">
-        </textarea>
+            </textarea>
         </div>
+
         <div id="save" class="btn btn-info">Save</div>
         <div id="alert" style="display:none; position:fixed;width:500px;height:300px;top:50%;left:50%;margin-top:-150px;margin-left:-250px;z-index:99999;background-color:lightblue">
             <h2 style="position:absolute;width:300px;height:100px;top:40px;left:150px;margin-left:-55px;text-align:center">Are you sure?</h2>
             <div id="close" style="cursor:pointer; font-size:40px; position:absolute;top:15px;right:7px;height:40px;width:50px;color:red">X</div>
-            <button type="submit" id="send" class="btn" style="position:absolute;bottom:10px;width:100px;left:50%;margin-left:-50px">Send</button>
+            <button type="submit" id="send" disabled class="btn" style="position:absolute;bottom:10px;width:100px;left:50%;margin-left:-50px">Send</button>
         </div>
-        <input asp-for="Id" value="@Model.Id" style="display:none">
+        <input asp-for="Id" id="essayId" style="display:none">
     </form>
-
+    <div id="layout1" style="display:none;position:fixed;width:100%;height:100%;top:0;left:0;background-color:rgba(128, 128, 128,0.7);z-index:9000"></div>
 </div>
-<div id="layout1" style="display:none;position:fixed;width:100%;height:100%;top:0;left:0;background-color:rgba(128, 128, 128,0.7);z-index:9000"></div>
+
+@if (Model != null)
+{
+    <div id="tags-for-flexdatalist" style="display: none;">@Model.Tags</div>
+}
 
 <script src="~/lib/editor.md/examples/js/jquery.min.js"></script>
 <script src="~/lib/editor.md/editormd.js"></script>
+<script src="~/lib/jquery-flexdatalist/jquery.flexdatalist.min.js"></script>
+<script>
+    var isTagExists = {};
+    $('.flexdatalist').flexdatalist({
+        minLength: 1,
+        removeOnBackspace: false
+    });
+    $('.flexdatalist').flexdatalist('value', $('#tags-for-flexdatalist').html());
+
+    $(document).on('input', 'input[name=flexdatalist-Tags]', function () {
+        $.post('/Editor/GetAutocomplitedList', { lineBeginning: $(this).val() }, function (data) {
+            for (let i = 0; i < data.length; i++)
+                if (isTagExists[data[i].tagId] == undefined) {
+                    isTagExists[data[i].tagId] = 1;
+                    $('#tag-list').append($('<option>', { value: data[i].tagId, html: data[i].tagId }));
+                }
+        });
+    });
+
+</script>
+
 <script type="text/javascript">
     var testEditor;
 
@@ -66,39 +92,11 @@
         });
     });
 
-    $("#tags").on("click", "input.delete", function () {
-        $(this).detach();
-    });
-
 
     $(document).ready(function () {
-        var tags = $("#tagsToSend").val();
-        $("#tagsToSend").val("");
-        if (tags != "1") {
-            var arr = tags.split(' ');
-            for (var j = 1; j < arr.length - 1; j++) {
-                var newbutton = document.createElement("input");
-                newbutton.type = "button";
-                newbutton.className = "btn btn-default delete";
-                newbutton.defaultValue = arr[j];
-                newbutton.style = "margin:7px";
-                $("#tags").prepend(newbutton);
-            }
-        }
-
-        $("#tag").keydown(function (event) {
-            if (event.keyCode == 32) {
-                var newbutton = document.createElement("input");
-                newbutton.type = "button";
-                newbutton.className = "btn btn-default delete";
-                newbutton.defaultValue = $("#tag").val();
-                newbutton.style = "margin:7px";
-                $("#tags").prepend(newbutton);
-                $("#tag").val("");
-            }
-        });
-
+        $("#send").prop('disabled', true);
         $("#save").click(function () {
+            $("#send").prop('disabled', false);
             $("#save").hide();
             $("#alert").show();
             $("#layout1").css("display", "block");
@@ -109,6 +107,7 @@
         });
 
         $("#close").click(function () {
+            $("#send").prop('disabled', true);
             $("#save").show();
             $("#alert").hide();
             $("#layout1").css("display", "none");

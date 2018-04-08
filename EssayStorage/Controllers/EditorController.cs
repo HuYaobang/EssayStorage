@@ -80,6 +80,12 @@ namespace EssayStorage.Controllers
         }
 
         [HttpPost]
+        public List<Tag> GetAutocomplitedList(string lineBeginning)
+        {
+            return db.Tags.Where(t => t.TagId.StartsWith(lineBeginning)).OrderByDescending(k => k.TagId).Take(5).ToList();
+        }
+
+        [HttpPost]
         public IActionResult EditEssay(int essayId)
         {
             Essay essay = db.Essays.Where(e => e.Id == essayId).FirstOrDefault();
@@ -87,13 +93,13 @@ namespace EssayStorage.Controllers
             StringBuilder str = new StringBuilder("");
             if (essayTag != null)
             {
-                foreach (var temporary in essayTag)
-                {
-                    str.Append(temporary.TagId + " ");
-                }
+                int n = essayTag.Count;
+                for (int i = 0; i < n; i++)
+                    if (i != n - 1)
+                        str.Append(essayTag[i].TagId + ",");
+                    else
+                        str.Append(essayTag[i].TagId);
             }
-            else str.Append("1");
-
             if (essay != null)
             {
                 var model = new CreateEssayViewModel
@@ -137,6 +143,12 @@ namespace EssayStorage.Controllers
                 db.EssayToTags.Remove(essayTag);
             }
             await db.SaveChangesAsync();
+            var essayComments = db.UserEssayRatings.Where(e => e.EssayId == essayId).ToList();
+            foreach (var e in essayComments)
+            {
+                db.UserEssayRatings.Remove(e);
+            }
+            await db.SaveChangesAsync();
             db.Essays.Remove(essay);
             await db.SaveChangesAsync();
             return View();
@@ -145,9 +157,8 @@ namespace EssayStorage.Controllers
         [HttpPost]
         public async Task<IActionResult> SaveEssay(CreateEssayViewModel model)
         {
-            if (ModelState.IsValid)
-            {
-                string[] tags = model.Tags.Split(" ");
+                string[] tags = model.Tags.Split(",");
+
 
                 if (db.Essays.Any(e => e.Id == model.Id))
                 {
@@ -198,7 +209,8 @@ namespace EssayStorage.Controllers
                     await db.SaveChangesAsync();
                 }
                 else
-                {
+                {              
+
                     var user = await userManager.GetUserAsync(User);
                     db.Essays.Add(new Essay
                     {
@@ -238,8 +250,8 @@ namespace EssayStorage.Controllers
                     }
                     await userManager.UpdateAsync(user);
                 }
-            }
-            return View("SaveEssay");
+                return View("SaveEssay");
+            
         }
     }
 }
