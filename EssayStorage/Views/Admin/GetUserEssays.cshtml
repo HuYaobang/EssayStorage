@@ -1,6 +1,6 @@
 ﻿@using EssayStorage.Models.Database
 @{
-    ViewData["Title"] = "GetUserEssays";
+    ViewData["Title"] = "список конспект";
 }
 <link rel="stylesheet" href="~/lib/datatables/media/css/jquery.dataTables.min.css" />
 <script src="~/lib/datatables/media/js/jquery.dataTables.min.js"></script>
@@ -9,11 +9,11 @@
         <table id="essays-table" class="">
             <thead>
                 <tr>
-                    <th>Name</th>
-                    <th>Description</th>
-                    <th>Specialization</th>
-                    <th>Rating</th>
-                    <th>Creation time</th>
+                    <th>Имя</th>
+                    <th>Описание</th>
+                    <th>Специальность</th>
+                    <th>Рейтинг</th>
+                    <th>Дата создания</th>
                     <th></th>
                     <th></th>
                 </tr>
@@ -22,8 +22,8 @@
                 @foreach (Essay essay in (List<Essay>)ViewData["essays"])
                 {
                 <tr>
-                    <td class="odd" style="vertical-align: middle;">@Html.ActionLink(essay.Name, "essay", "display", new { essayId = essay.Id })</td>
-                    <td class="even" style="vertical-align: middle;">@essay.Description</td>
+                    <td style="vertical-align: middle;">@Html.ActionLink(essay.Name, "essay", "display", new { essayId = essay.Id })</td>
+                    <td style="vertical-align: middle;">@essay.Description</td>
                     <td style="vertical-align: middle;">@essay.Specialization</td>
                     <td style="vertical-align: middle;">@essay.AverageRating</td>
                     <td style="vertical-align: middle;">@essay.CreationTime</td>
@@ -31,7 +31,7 @@
                         <center>
                             <form method="post" action="../Editor/EditEssay">
                                 <input name="essayId" value="@essay.Id" style="display:none;" />
-                                <button class="btn">Edit</button>
+                                <button class="btn">Ред.</button>
                             </form>
                         </center>
                     </td>
@@ -39,7 +39,7 @@
                         <center>
                             <form method="post" action="../Editor/DeleteEssay">
                                 <input name="essayId" value="@essay.Id" style="display:none;" />
-                                <button class="btn">Delete</button>
+                                <button class="btn">Удалить</button>
                             </form>
                         </center>
                     </td>

@@ -113,7 +113,6 @@ namespace EssayStorage.Controllers
                 {
                     Email = model.Email,
                     IsAdmin = false,
-                    UserInfo = "You can write about yourself here",
                     UserName = model.Name,
                     PicturePath = "/images/defaultavatar.png"
                 };

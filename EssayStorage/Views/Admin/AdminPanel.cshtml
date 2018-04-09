@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewData["Title"] = "AdminPanel";
+    ViewData["Title"] = "Админ панель";
 }
 
 <link rel="stylesheet" href="~/lib/datatables/media/css/jquery.dataTables.min.css" />
@@ -11,10 +11,10 @@
         <table id="users-table" class="">
             <thead>
                 <tr>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Is admin</th>
-                    <th>Is blocked</th>
+                    <th>Ник</th>
+                    <th>E-mail</th>
+                    <th>Админ?</th>
+                    <th>Блокирован?</th>
                     <th></th>
                 </tr>
             </thead>
@@ -23,7 +23,6 @@
                 {
                     <tr>                        
                         <td class="odd" style="vertical-align: middle;">
-                            
                              @user.UserName
                         </td>
                         <td class="even" style="vertical-align: middle;">@user.Email</td>
@@ -73,13 +72,13 @@
 <script>
     $(".sendAdmin").on("click", function () {
         $.post("SetAdmin", { userId: $(this).attr("id") }, function (response) { 
-            alert("User is admin now");
+            alert("Пользователь стал админом");
         });
     })
 
     $(".sendBlock").on("click", function () {
         $.post("SetBlock", { userId: $(this).attr("id") }, function (response) {
-            alert("User block status is changed");
+            alert("Статус блокировки пользователя изменен");
         });
     })
 

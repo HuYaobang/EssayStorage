@@ -14,7 +14,7 @@ namespace EssayStorage.Models.AccountViewModels
         public string Email { get; set; }
 
         [Required]
-        [Display(Name = "Имя")]
+        [Display(Name = "Ник")]
         public string Name { get; set; }
 
         [Required]

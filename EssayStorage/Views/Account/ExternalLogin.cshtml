@@ -1,16 +1,16 @@
 ﻿@model ExternalLoginViewModel
 @{
-    ViewData["Title"] = "Register";
+    ViewData["Title"] = "Регистрация";
 }
 
 <h2>@ViewData["Title"]</h2>
-<h4>Associate your @ViewData["LoginProvider"] account.</h4>
+<h4>Свяжите свою учетную запись @ViewData["LoginProvider"] .</h4>
 <hr />
 
 <p class="text-info">
-    You've successfully authenticated with <strong>@ViewData["LoginProvider"]</strong>.
-    Please enter an email address for this site below and click the Register button to finish
-    logging in.
+    Вы успешно прошли аутентификацию с помощью <strong>@ViewData["LoginProvider"]</strong>.
+    Введите адрес электронной почты для этого сайта ниже и нажмите кнопку «Регистрация», чтобы закончить
+    вход в систему.
 </p>
 
 <div class="row">
@@ -22,7 +22,7 @@
                 <input asp-for="Email" class="form-control" />
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
-            <button type="submit" class="btn btn-default">Register</button>
+            <button type="submit" class="btn btn-default">Регистрация</button>
         </form>
     </div>
 </div>

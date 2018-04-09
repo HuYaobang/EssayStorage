@@ -11,7 +11,7 @@ using System;
 namespace EssayStorage.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20180404182245_CreateDb")]
+    [Migration("20180409124712_CreateDb")]
     partial class CreateDb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -38,6 +38,8 @@ namespace EssayStorage.Migrations
 
                     b.Property<bool>("IsAdmin");
 
+                    b.Property<bool>("IsBlocked");
+
                     b.Property<bool>("LockoutEnabled");
 
                     b.Property<DateTimeOffset?>("LockoutEnd");
@@ -59,8 +61,6 @@ namespace EssayStorage.Migrations
                     b.Property<string>("SecurityStamp");
 
                     b.Property<bool>("TwoFactorEnabled");
-
-                    b.Property<string>("UserInfo");
 
                     b.Property<string>("UserName")
                         .HasMaxLength(256);

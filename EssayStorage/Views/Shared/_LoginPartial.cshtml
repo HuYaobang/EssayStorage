@@ -10,22 +10,22 @@
         <ul class="nav navbar-nav navbar-right">
             @if((await UserManager.GetUserAsync(User)).IsAdmin)
             {
-                 <li><a asp-area="" asp-controller="Admin" asp-action="AdminPanel">Панель администрирования</a></li>
+                 <li><a asp-area="" asp-controller="Admin" asp-action="AdminPanel">Admin panel</a></li>
             }
            
             <li>
                 <input type="search" class="form-control" placeholder="..." name="Data" autocomplete="off" style="margin-top:7px" />
             </li>
             <li>
-                <button type="submit" class="form-control" style="margin-top:7px;margin-left:2px;margin-right:10px">Поиск</button>
+                <button type="submit" class="form-control" style="margin-top:7px;margin-left:2px;margin-right:10px">Search</button>
             </li>
             @if((await UserManager.GetUserAsync(User)).IsBlocked)
             {
-                 <li><a asp-area="" title="Manage" asp-controller="Manage" asp-action="Index">Личный кабинет</a></li>
+                 <li><a asp-area="" title="Manage" asp-controller="Manage" asp-action="Index">Account</a></li>
             }
             else
             {
-                 <li><a asp-area="" asp-controller="Manage" asp-action="Index" title="Manage">Личный кабинет</a></li>
+                 <li><a asp-area="" asp-controller="Manage" asp-action="Index" title="Manage">Account</a></li>
             }           
             <li><a asp-area="" asp-controller="Account" asp-action="Logout">Log out</a></li>
 
@@ -40,10 +40,10 @@ else
                 <input type="search" class="form-control" placeholder="search" name="Data" autocomplete="off" style="margin-top:7px" />
             </li>
             <li>
-                <button type="submit" class="btn btn-link navbar-btn navbar-link">Поиск</button>
+                <button type="submit" class="btn btn-link navbar-btn navbar-link">Search</button>
             </li>
-            <li><a asp-area="" asp-controller="Account" asp-action="Register">Регистрация</a></li>
-            <li><a asp-area="" asp-controller="Account" asp-action="Login">Вход</a></li>
+            <li><a asp-area="" asp-controller="Account" asp-action="Register">Register</a></li>
+            <li><a asp-area="" asp-controller="Account" asp-action="Login">Log in</a></li>
 
         </ul>
     </form>

@@ -61,8 +61,6 @@ namespace EssayStorage.Migrations
 
                     b.Property<bool>("TwoFactorEnabled");
 
-                    b.Property<string>("UserInfo");
-
                     b.Property<string>("UserName")
                         .HasMaxLength(256);
 

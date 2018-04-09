@@ -15,8 +15,6 @@ namespace EssayStorage.Models
             LikedComments = new List<UserComment>();
             UserEssayRatings = new List<UserEssayRating>();
         }
-
-        public string UserInfo { get; set; }
         public string PicturePath { get; set; }
         public bool IsAdmin { get; set; }
         public bool IsBlocked { get; set; }

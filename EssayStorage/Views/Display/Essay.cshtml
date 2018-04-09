@@ -2,7 +2,7 @@
 @using Microsoft.AspNetCore.Identity
 @inject SignInManager<ApplicationUser> SignInManager
 @{
-    ViewData["Title"] = "Essay";
+    ViewData["Title"] = "Конспект";
 }
 
 <link rel="stylesheet" href="~/lib/editor.md/examples/css/style.css" />
@@ -192,7 +192,7 @@
     <div class="row">
         <div class="col-md-12">
             <div style="color: #ee8b2d; font-size: 20px; padding: 20px; display: inline-block; float: left;">
-                <label style="display: block; color: darkgray;">Avg rating</label>
+                <label style="display: block; color: darkgray;">Средний рейтинг</label>
                 <input type="hidden" id="avgrating" class="rating" data-readonly />
                 <br />
                 <span id="avgratingspan" style="color: darkgray; font-size: 15px; margin-right: 10px; float: right;">@Math.Round(Model.AverageRating, 1)/5</span>
@@ -200,10 +200,10 @@
             @if (SignInManager.IsSignedIn(User))
             {
                 <div style="color: #ee8b2d; font-size: 20px; padding: 20px; display: inline-block; float: right;">
-                    <label style="display: block; color: darkgray;">Your rating</label>
+                    <label style="display: block; color: darkgray;">Вы поставили</label>
                     <input id="user-rating" type="hidden" class="rating" value="@ViewData["user-rating"]" />
                 </div>
-
+            }
             <div class="panel">
                 <div class="panel-body">
                     <textarea style="resize: none;" id="comment-text" class="form-control" rows="2" placeholder="Добавьте Ваш комментарий"></textarea>
@@ -223,7 +223,6 @@
 
                 </div>
             </div>
-            }
         </div>
 
     </div>
