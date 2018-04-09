@@ -57,14 +57,7 @@ namespace EssayStorage.Controllers
         {
             var user = await _userManager.GetUserAsync(User);
             var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-            var callbackUrl = Url.Action(
-                "ConfirmEmail",
-                "Account",
-                new { userId = user.Id, code = code },
-                protocol: HttpContext.Request.Scheme);
-            EmailService emailService = new EmailService();
-            await emailService.SendEmailAsync(user.Email, "Confirm your account",
-                $"Подтвердите регистрацию, перейдя по ссылке: <a href='{callbackUrl}'>link</a>");
+            await SendConfirmationOnEmail(user, code);
             return true;
         }
 
@@ -74,34 +67,9 @@ namespace EssayStorage.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var user = await _userManager.GetUserAsync(User);
-            if (user == null)
-            {
-                throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
-            }
-
-            var model = new IndexViewModel
-            {
-                Username = user.UserName,
-                Email = user.Email,
-                IsEmailConfirmed = user.EmailConfirmed,
-                StatusMessage = StatusMessage,
-                PicturePath = user.PicturePath
-            };
-
+            var user = await GetCurrentUser();
+            var model = CreateIndexViewModelByUser(user);
             return View(model);
-        }
-
-        [HttpPost]
-        public async Task<bool> UpdateName(string value)
-        {
-            var user = await _userManager.GetUserAsync(User);
-            user.UserName = value;
-            _db.Users.Update(user);
-            if (await _db.SaveChangesAsync() > 0)
-                return true;
-            else
-                return false;
         }
 
         [HttpPost]
@@ -109,87 +77,17 @@ namespace EssayStorage.Controllers
         public async Task<IActionResult> Index(IndexViewModel model)
         {
             if (!ModelState.IsValid)
-            {
                 return View(model);
-            }
-
-            var user = await _userManager.GetUserAsync(User);
-            if (user == null)
-            {
-                throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
-            }
-            string error;
-            var email = user.Email;
-            if(model.Email != email)
-            {
-                try
-                {
-                    await _userManager.SetEmailAsync(user, model.Email);
-                }
-                catch
-                {
-                    error = "e-mail";
-                    ViewData.Add("error", error);
-                    return View("ManageError");
-                }
-            }
-
-            var userName = user.UserName;
-            if (model.Username != userName)
-            {
-                var setUserNameResult = await _userManager.SetUserNameAsync(user, model.Username);
-                
-                if (!setUserNameResult.Succeeded)
-                {
-                    error = "username";
-                    ViewData.Add("error", error);
-                    return View("ManageError");
-                }
-            }
-
-            StatusMessage = "Your profile has been updated";
-            return RedirectToAction(nameof(Index));
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> SendVerificationEmail(IndexViewModel model)
-        {
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
-
-            var user = await _userManager.GetUserAsync(User);
-            if (user == null)
-            {
-                throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
-            }
-
-            var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-            var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
-            var email = user.Email;
-            await _emailSender.SendEmailConfirmationAsync(email, callbackUrl);
-
-            StatusMessage = "Verification email sent. Please check your email.";
-            return RedirectToAction(nameof(Index));
+            var result = await ChangeEmailAndNameIfNeed(model);
+            return result;
         }
 
         [HttpGet]
         public async Task<IActionResult> ChangePassword()
         {
-            var user = await _userManager.GetUserAsync(User);
-            if (user == null)
-            {
-                throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
-            }
-
+            var user = await GetCurrentUser();
             var hasPassword = await _userManager.HasPasswordAsync(user);
-            if (!hasPassword)
-            {
-                return RedirectToAction(nameof(SetPassword));
-            }
-
+            if (!hasPassword) return RedirectToAction(nameof(SetPassword));
             var model = new ChangePasswordViewModel { StatusMessage = StatusMessage };
             return View(model);
         }
@@ -199,46 +97,19 @@ namespace EssayStorage.Controllers
         public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
         {
             if (!ModelState.IsValid)
-            {
                 return View(model);
-            }
-
-            var user = await _userManager.GetUserAsync(User);
-            if (user == null)
-            {
-                throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
-            }
-
-            var changePasswordResult = await _userManager.ChangePasswordAsync(user, model.OldPassword, model.NewPassword);
-            if (!changePasswordResult.Succeeded)
-            {
-                AddErrors(changePasswordResult);
-                return View(model);
-            }
-
-            await _signInManager.SignInAsync(user, isPersistent: false);
-            _logger.LogInformation("User changed their password successfully.");
-            StatusMessage = "Your password has been changed.";
-
-            return RedirectToAction(nameof(ChangePassword));
+            var user = await GetCurrentUser();
+            var result = await ChangeUserPassword(model, user);
+            return result;
         }
 
         [HttpGet]
         public async Task<IActionResult> SetPassword()
         {
-            var user = await _userManager.GetUserAsync(User);
-            if (user == null)
-            {
-                throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
-            }
-
+            var user = await GetCurrentUser();
             var hasPassword = await _userManager.HasPasswordAsync(user);
-
             if (hasPassword)
-            {
                 return RedirectToAction(nameof(ChangePassword));
-            }
-
             var model = new SetPasswordViewModel { StatusMessage = StatusMessage };
             return View(model);
         }
@@ -248,45 +119,22 @@ namespace EssayStorage.Controllers
         public async Task<IActionResult> SetPassword(SetPasswordViewModel model)
         {
             if (!ModelState.IsValid)
-            {
                 return View(model);
-            }
-
-            var user = await _userManager.GetUserAsync(User);
-            if (user == null)
-            {
-                throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
-            }
-
-            var addPasswordResult = await _userManager.AddPasswordAsync(user, model.NewPassword);
-            if (!addPasswordResult.Succeeded)
-            {
-                AddErrors(addPasswordResult);
-                return View(model);
-            }
-
-            await _signInManager.SignInAsync(user, isPersistent: false);
-            StatusMessage = "Your password has been set.";
-
-            return RedirectToAction(nameof(SetPassword));
+            var user = await GetCurrentUser();
+            var addPasswordResult = await AddUserPassword(model, user);
+            return addPasswordResult;
         }
 
         [HttpGet]
         public async Task<IActionResult> ExternalLogins()
         {
-            var user = await _userManager.GetUserAsync(User);
-            if (user == null)
-            {
-                throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
-            }
-
+            var user = await GetCurrentUser();
             var model = new ExternalLoginsViewModel { CurrentLogins = await _userManager.GetLoginsAsync(user) };
             model.OtherLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync())
                 .Where(auth => model.CurrentLogins.All(ul => auth.Name != ul.LoginProvider))
                 .ToList();
             model.ShowRemoveButton = await _userManager.HasPasswordAsync(user) || model.CurrentLogins.Count > 1;
             model.StatusMessage = StatusMessage;
-
             return View(model);
         }
 
@@ -294,10 +142,7 @@ namespace EssayStorage.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> LinkLogin(string provider)
         {
-            // Clear the existing external cookie to ensure a clean login process
             await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
-
-            // Request a redirect to the external login provider to link a login for the current user
             var redirectUrl = Url.Action(nameof(LinkLoginCallback));
             var properties = _signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl, _userManager.GetUserId(User));
             return new ChallengeResult(provider, properties);
@@ -306,27 +151,10 @@ namespace EssayStorage.Controllers
         [HttpGet]
         public async Task<IActionResult> LinkLoginCallback()
         {
-            var user = await _userManager.GetUserAsync(User);
-            if (user == null)
-            {
-                throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
-            }
-
-            var info = await _signInManager.GetExternalLoginInfoAsync(user.Id);
-            if (info == null)
-            {
-                throw new ApplicationException($"Unexpected error occurred loading external login info for user with ID '{user.Id}'.");
-            }
-
-            var result = await _userManager.AddLoginAsync(user, info);
-            if (!result.Succeeded)
-            {
-                throw new ApplicationException($"Unexpected error occurred adding external login for user with ID '{user.Id}'.");
-            }
-
-            // Clear the existing external cookie to ensure a clean login process
+            var user = await GetCurrentUser();
+            var info = await GetExternalLoginInfo(user);
+            var result = await AddExternalLogin(user, info);
             await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
-
             StatusMessage = "The external login was added.";
             return RedirectToAction(nameof(ExternalLogins));
         }
@@ -335,18 +163,12 @@ namespace EssayStorage.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> RemoveLogin(RemoveLoginViewModel model)
         {
-            var user = await _userManager.GetUserAsync(User);
-            if (user == null)
-            {
-                throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
-            }
-
+            var user = await GetCurrentUser();
             var result = await _userManager.RemoveLoginAsync(user, model.LoginProvider, model.ProviderKey);
             if (!result.Succeeded)
             {
                 throw new ApplicationException($"Unexpected error occurred removing external login for user with ID '{user.Id}'.");
             }
-
             await _signInManager.SignInAsync(user, isPersistent: false);
             StatusMessage = "The external login was removed.";
             return RedirectToAction(nameof(ExternalLogins));
@@ -361,10 +183,9 @@ namespace EssayStorage.Controllers
         [HttpGet]
         public async Task<IActionResult> UserEssays()
         {
-            var user = await _userManager.GetUserAsync(User);
+            var user = await GetCurrentUser();
             List<Essay> essays = _db.Essays.Where((e) => e.UserId == user.Id).ToList();
             ViewData.Add("essays", essays);
-            
             return View();
         }
 
@@ -374,19 +195,105 @@ namespace EssayStorage.Controllers
             var user = await _userManager.GetUserAsync(User);
             if (file != null)
             {
-                string path = "/images/avatars/" + user.UserName+".png";
-                Console.WriteLine("___________\n" + _appEnvironment.WebRootPath + path + "\n____________________");
+                string path = "/images/avatars/" + user.UserName + ".png";
                 using (var filestream = new FileStream(_appEnvironment.WebRootPath + path, FileMode.Create))
-                {
                     await file.CopyToAsync(filestream);
-                }
-                //_db.Users.Where(ussr => ussr.Id == _userManager.GetUserId(User)).First();
                 user.PicturePath = path;
                 _db.Users.Update(user);
                 await _db.SaveChangesAsync();
-                
             }
-            IndexViewModel model = new IndexViewModel
+            IndexViewModel model = CreateIndexViewModelByUser(user);
+            model.PicturePath = user.PicturePath;
+            return RedirectToAction("Index", model);
+        }
+
+        private async Task<IdentityResult> AddExternalLogin(ApplicationUser user, ExternalLoginInfo info)
+        {
+            var result = await _userManager.AddLoginAsync(user, info);
+            if (!result.Succeeded)
+                throw new ApplicationException($"Unexpected error occurred adding external login for user with ID '{user.Id}'.");
+            return result;
+        }
+
+        private async Task<ExternalLoginInfo> GetExternalLoginInfo(ApplicationUser user)
+        {
+            var info = await _signInManager.GetExternalLoginInfoAsync(user.Id);
+            if (info == null)
+                throw new ApplicationException($"Unexpected error occurred loading external login info for user with ID '{user.Id}'.");
+            return info;
+        }
+
+        private async Task<IActionResult> AddUserPassword(SetPasswordViewModel model, ApplicationUser user)
+        {
+            var addPasswordResult = await _userManager.AddPasswordAsync(user, model.NewPassword);
+            if (!addPasswordResult.Succeeded)
+            {
+                AddErrors(addPasswordResult);
+                return View(model);
+            }
+            await _signInManager.SignInAsync(user, isPersistent: false);
+            StatusMessage = "Your password has been set.";
+            return RedirectToAction(nameof(SetPassword));
+        }
+
+        private async Task<IActionResult> ChangeUserPassword(ChangePasswordViewModel model, ApplicationUser user)
+        {
+            var changePasswordResult = await _userManager.ChangePasswordAsync(user, model.OldPassword, model.NewPassword);
+            if (!changePasswordResult.Succeeded)
+            {
+                AddErrors(changePasswordResult);
+                return View(model);
+            }
+            await _signInManager.SignInAsync(user, isPersistent: false);
+            StatusMessage = "Your password has been changed.";
+            return RedirectToAction(nameof(ChangePassword));
+        }
+
+        private async Task<IActionResult> ChangeEmailIfNeed(IndexViewModel model, ApplicationUser user)
+        {
+            if (model.Email != user.Email)
+            {
+                try { await _userManager.SetEmailAsync(user, model.Email); }
+                catch { ViewData.Add("error", "e-mail"); return View("ManageError"); }
+            }
+            return null;
+        }
+
+        private async Task<IActionResult> ChangeNameIfNeed(IndexViewModel model, ApplicationUser user)
+        {
+            if (model.Username != user.UserName)
+            {
+                var setUserNameResult = await _userManager.SetUserNameAsync(user, model.Username);
+                if (!setUserNameResult.Succeeded)
+                {
+                    ViewData.Add("error", "username"); return View("ManageError");
+                }
+            }
+            return null;
+        }
+
+        private async Task<IActionResult> ChangeEmailAndNameIfNeed(IndexViewModel model)
+        {
+            var user = await GetCurrentUser();
+            var changeEmailResult = await ChangeEmailIfNeed(model, user);
+            if (changeEmailResult != null) return changeEmailResult;
+            var changeNameResult = await ChangeNameIfNeed(model, user);
+            if (changeNameResult != null) return changeNameResult;
+            StatusMessage = "Your profile has been updated";
+            return RedirectToAction(nameof(Index));
+        }
+
+        private async Task<ApplicationUser> GetCurrentUser()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+                throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+            return user;
+        }
+
+        private IndexViewModel CreateIndexViewModelByUser(ApplicationUser user)
+        {
+            return new IndexViewModel
             {
                 Username = user.UserName,
                 Email = user.Email,
@@ -394,7 +301,14 @@ namespace EssayStorage.Controllers
                 StatusMessage = StatusMessage,
                 PicturePath = user.PicturePath
             };
-            return RedirectToAction("Index", model);
+        }
+
+        private async Task SendConfirmationOnEmail(ApplicationUser user, string code)
+        {
+            var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
+            EmailService emailService = new EmailService();
+            await emailService.SendEmailAsync(user.Email, "Confirm your account",
+                $"Подтвердите регистрацию, перейдя по ссылке: <a href='{callbackUrl}'>link</a>");
         }
 
         #region Helpers

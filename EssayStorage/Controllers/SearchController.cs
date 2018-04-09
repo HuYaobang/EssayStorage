@@ -22,7 +22,6 @@ namespace EssayStorage.Controllers
             this.userManager = userManager;
         }
 
-
         public IActionResult Index()
         {
             return View();
@@ -32,39 +31,8 @@ namespace EssayStorage.Controllers
         [HttpPost]
         public IActionResult StartSearch(string Data)
         {
-            List<Essay> essays = db.Essays
-                .Where
-                (
-                    essay =>
-                    essay.Content.Contains(Data) ||
-                    essay.Name.Contains(Data)
-                )
-                .ToList();
-
-            var comments = db.Comments
-                .Where
-                (
-                    comment =>
-                    comment.Text.Contains(Data)
-                )
-                .ToList();
-
-            List<Essay> essays_ = new List<Essay>();
-            foreach (var comment in comments)
-            {
-                essays_.Add
-                    (
-                        db.Essays
-                        .Where
-                        (
-                            essay =>
-                            essay.Id == comment.EssayId
-                        )
-                        .First()
-                    );
-            }
-
-            List<Essay> result = essays.Union(essays_).ToList();
+            List<Essay> essays = GetEssaysBySearchNameAndContent(Data);
+            List<Essay> result = essays.Union(GetEssaysSerachedByName(Data)).ToList();
             ViewData.Add("essays", result);
             return View("SearchResult");
         }
@@ -74,12 +42,26 @@ namespace EssayStorage.Controllers
         {
             var essayTags = db.EssayToTags.Where(e => e.TagId == Data).ToList();
             List<Essay> result = new List<Essay>();
-            foreach (var temporary in essayTags)
-            {
-                result.Add(db.Essays.Where(e => e.Id == temporary.EssayId).FirstOrDefault());
-            }
+            foreach (var essayTag in essayTags) result.Add(db.Essays.Where(e => e.Id == essayTag.EssayId).FirstOrDefault());
             ViewData.Add("essays", result);
             return View("SearchResult");
+        }
+
+        private List<Essay> GetEssaysSerachedByName(string data)
+        {
+            var comments = db.Comments.Where(с => с.Text.Contains(data)).ToList();
+            List<Essay> essays = new List<Essay>();
+            foreach (var comment in comments)
+                essays.Add(db.Essays.Where(e => e.Id == comment.EssayId).First());
+            return essays;
+        }
+
+        private List<Essay> GetEssaysBySearchNameAndContent(string data)
+        {
+            return db.Essays.Where(
+                    essay =>
+                    essay.Content.Contains(data) ||
+                    essay.Name.Contains(data)).ToList();
         }
     }
 }
