@@ -1,6 +1,6 @@
 ﻿@using EssayStorage.Models.Database
 @{
-    ViewData["Title"] = "Search Result";
+    ViewData["Title"] = "Essay storage";
 }
 
 
@@ -23,7 +23,7 @@
                 }
             };
 
-            $.post("Home/GetTagsCloud", function (response) {
+            $.post("../Home/GetTagsCloud", function (response) {
                 for (let i = 0; i < response.length; i++) {
                     var newref = document.createElement("a");
                     newref.href = "/Search/TagsSearch?Data=" + response[i].tagId;

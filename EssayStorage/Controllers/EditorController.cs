@@ -32,32 +32,50 @@ namespace EssayStorage.Controllers
         [HttpPost]
         public async Task<double?> SetRating(int rating, int essayId)
         {
-            if (rating < 1 || rating > 5)
-                return null;
             var user = await userManager.GetUserAsync(User);
-            if (user == null)
-                return null;
             var essay = db.Essays.Where(e => e.Id == essayId).FirstOrDefault();
-            if (essay == null)
-                return null;
-            var userEssayRating = db.UserEssayRatings.Where(uer => uer.EssayId == essayId && uer.UserId == user.Id).FirstOrDefault();
-            if (userEssayRating == null)
-            {
-                db.UserEssayRatings.Add(new UserEssayRating { EssayId = essayId, UserId = user.Id, Rating = rating });
-                double total = essay.AverageRating * essay.VotersCount + rating;
-                essay.VotersCount++;
-                essay.AverageRating = total / essay.VotersCount;
+            if (RatingVerification(rating, user, essay))
+            {               
+                return Math.Round((await SetNewUserRating(rating, essayId, user, essay)).AverageRating, 1);
             }
             else
-            {
-                db.UserEssayRatings.Update(userEssayRating);
-                double total = essay.AverageRating * essay.VotersCount - userEssayRating.Rating + rating;
-                essay.AverageRating = total / essay.VotersCount;
-                userEssayRating.Rating = rating;
-                db.UserEssayRatings.Update(userEssayRating);
-            }
+                return null;           
+        }
+
+        public async Task<Essay> SetNewUserRating(int rating, int essayId, ApplicationUser user, Essay essay)
+        {
+            var userEssayRating = db.UserEssayRatings.Where(uer => uer.EssayId == essayId && uer.UserId == user.Id).FirstOrDefault();
+            if (userEssayRating == null)
+                AddNewRating(rating, essayId, user, essay); 
+            else
+                UpdateOldRating(rating, essayId, user, essay, userEssayRating);
             await db.SaveChangesAsync();
-            return Math.Round(essay.AverageRating, 1);
+            return essay;
+        }
+
+        public void AddNewRating(int rating, int essayId, ApplicationUser user, Essay essay)
+        {
+            db.UserEssayRatings.Add(new UserEssayRating { EssayId = essayId, UserId = user.Id, Rating = rating });
+            double total = essay.AverageRating * essay.VotersCount + rating;
+            essay.VotersCount++;
+            essay.AverageRating = total / essay.VotersCount;
+        }
+
+        public void UpdateOldRating(int rating, int essayId, ApplicationUser user, Essay essay, UserEssayRating userEssayRating)
+        {
+            db.UserEssayRatings.Update(userEssayRating);
+            double total = essay.AverageRating * essay.VotersCount - userEssayRating.Rating + rating;
+            essay.AverageRating = total / essay.VotersCount;
+            userEssayRating.Rating = rating;
+            db.UserEssayRatings.Update(userEssayRating);
+        }
+
+        public bool RatingVerification(int rating, ApplicationUser user, Essay essay)
+        {
+            if ((rating < 1 || rating > 5) || (user == null) || (essay == null))
+                return false;
+            else
+                return true;
         }
 
         [HttpPost]
@@ -89,169 +107,192 @@ namespace EssayStorage.Controllers
         public IActionResult EditEssay(int essayId)
         {
             Essay essay = db.Essays.Where(e => e.Id == essayId).FirstOrDefault();
-            var essayTag = db.EssayToTags.Where(e => e.EssayId == essayId).ToList();
+            var essayTag = db.EssayToTags.Where(e => e.EssayId == essayId).ToList();            
+            return View(ReturnEssayViewModel(essay, essayTag));
+        }
+
+        public CreateEssayViewModel ReturnEssayViewModel(Essay essay, List<EssayTag> essayTag)
+        {
+            var model = new CreateEssayViewModel{ Content = essay.Content, Description = essay.Description, Name = essay.Name,
+                    Specialization = essay.Specialization, Id = essay.Id, Tags = ConvertTagsToString(essayTag) };
+            return model;                   
+        }
+
+        public string ConvertTagsToString(List<EssayTag> essayTag)
+        {
             StringBuilder str = new StringBuilder("");
-            if (essayTag != null)
-            {
-                int n = essayTag.Count;
-                for (int i = 0; i < n; i++)
-                    if (i != n - 1)
-                        str.Append(essayTag[i].TagId + ",");
-                    else
-                        str.Append(essayTag[i].TagId);
-            }
-            if (essay != null)
-            {
-                var model = new CreateEssayViewModel
-                {
-                    Content = essay.Content,
-                    Description = essay.Description,
-                    Name = essay.Name,
-                    Specialization = essay.Specialization,
-                    Id = essayId,
-                    Tags = Convert.ToString(str)
-                };
-                return View(model);
-            }
-            return null;
+            for (int i = 0; i < essayTag.Count; i++)
+                if (i != essayTag.Count - 1)
+                    str.Append(essayTag[i].TagId + ",");
+                else
+                    str.Append(essayTag[i].TagId);            
+            return Convert.ToString(str);
         }
 
         [HttpPost]
         public async Task<IActionResult> DeleteEssay(int essayId)
+        {            
+            await DeleteCommentRows(essayId);
+            await DeleteTagRows(essayId);
+            await DeleteUserEssayCommentRows(essayId);
+            await DeleteEssayRow(essayId);
+            return View();
+        }
+
+        public async Task DeleteEssayRow(int essayId)
         {
             Essay essay = db.Essays.Where(e => e.Id == essayId).FirstOrDefault();
-            var comments = db.Comments.Where(c => c.EssayId == essayId).ToList();
-            foreach(var comment in comments)
-            {
-                db.Comments.Remove(comment);
-            }
+            db.Essays.Remove(essay);
             await db.SaveChangesAsync();
-            var essayTags = db.EssayToTags.Where(et => et.EssayId == essayId).ToList();
-            foreach(var essayTag in essayTags)
-            {
-                Tag tag = db.Tags.Where(t => t.TagId == essayTag.TagId).FirstOrDefault();
-                if (tag.Frequency == 1)
-                {
-                    db.Tags.Remove(tag);
-                }
-                else
-                {
-                    tag.Frequency--;
-                    db.Tags.Update(tag);
-                }
-                db.Tags.Update(tag);
-                db.EssayToTags.Remove(essayTag);
-            }
-            await db.SaveChangesAsync();
-            var essayComments = db.UserEssayRatings.Where(e => e.EssayId == essayId).ToList();
-            foreach (var e in essayComments)
+        }
+
+        public async Task DeleteUserEssayCommentRows(int essayId)
+        {
+            var userEssayComments = db.UserEssayRatings.Where(e => e.EssayId == essayId).ToList();
+            foreach (var e in userEssayComments)
             {
                 db.UserEssayRatings.Remove(e);
             }
             await db.SaveChangesAsync();
-            db.Essays.Remove(essay);
+        }
+
+        public async Task DeleteCommentRows(int essayId)
+        {
+            var comments = db.Comments.Where(c => c.EssayId == essayId).ToList();
+            foreach (var comment in comments)
+            {
+                db.Comments.Remove(comment);
+            }
             await db.SaveChangesAsync();
-            return View();
+        }
+
+        public async Task DeleteTagRows(int essayId)
+        {
+            var essayTags = db.EssayToTags.Where(et => et.EssayId == essayId).ToList();
+            foreach (var essayTag in essayTags)
+            {
+                DeleteCertainTag(essayTag);
+            }
+            await db.SaveChangesAsync();
+        }
+
+        public void DeleteCertainTag(EssayTag essayTag)
+        {
+            Tag tag = db.Tags.Where(t => t.TagId == essayTag.TagId).FirstOrDefault();
+            if (tag.Frequency == 1)
+                db.Tags.Remove(tag);
+            else
+            {
+                tag.Frequency--;
+                db.Tags.Update(tag);
+            }
+            db.EssayToTags.Remove(essayTag);
+        }
+
+        public Essay ReturnUpdatedEssay(CreateEssayViewModel model)
+        {
+            Essay essay = db.Essays.Where(e => e.Id == model.Id).First();
+            essay.Name = model.Name;
+            essay.Description = model.Description;
+            essay.Specialization = model.Specialization;
+            essay.Content = model.Content;
+            return essay;
+        }
+
+        public async Task DeleteMissingTags(CreateEssayViewModel model, string[] tags)
+        {
+            var tagsToEssay = db.EssayToTags.Where(e => e.EssayId == model.Id).ToList();
+            foreach (var temporary in tagsToEssay)
+            {
+                if (tags.Contains(temporary.TagId))
+                    continue;
+                else
+                    TakeMissingTagFromDb(temporary);
+            }
+            await db.SaveChangesAsync();
+        }
+
+        public void TakeMissingTagFromDb(EssayTag temporary)
+        {
+            db.EssayToTags.Remove(temporary);
+            var updatedTag = db.Tags.Where(e => e.TagId == temporary.TagId).First();
+            DeleteMissingTagRow(updatedTag);
+        }
+
+        public void DeleteMissingTagRow(Tag updatedTag)
+        {
+            if (updatedTag.Frequency == 1)
+                db.Tags.Remove(updatedTag);
+            else
+            {
+                updatedTag.Frequency--;
+                db.Tags.Update(updatedTag);
+            }
+        }
+
+        public async Task AddNewTags(string[] tags, Essay essay)
+        {
+            foreach (var temporary in tags)
+            {
+                TryTakeNewTag(temporary);
+                if (db.EssayToTags.Where(e => e.TagId == temporary && e.EssayId == essay.Id).FirstOrDefault() == null)
+                    db.EssayToTags.Add(new EssayTag { TagId = temporary, EssayId = essay.Id });
+                await db.SaveChangesAsync();
+            }
+        }
+
+        public void TryTakeNewTag(string temporary)
+        {
+            Tag tag = db.Tags.Where(t => t.TagId == temporary).FirstOrDefault();
+            if (tag != null)
+            {
+                tag.Frequency++;
+                db.Tags.Update(tag);
+            }
+            else            
+                db.Tags.Add(new Tag { TagId = temporary, Frequency = 1 });            
+        }
+
+        public async Task UpdateTagsInDb(CreateEssayViewModel model, string[] tags, Essay essay)
+        {
+            await DeleteMissingTags(model, tags);
+            await AddNewTags(tags, essay);
+        }
+
+        public async Task UpdateEssayInDb(CreateEssayViewModel model, string[] tags)
+        {
+            Essay essay = ReturnUpdatedEssay(model);
+            db.Update(essay);
+            await db.SaveChangesAsync();
+            await UpdateTagsInDb(model, tags, essay);
+        }
+
+        public async Task<Essay> AddNewEssayToDb(CreateEssayViewModel model, ApplicationUser user)
+        {
+            db.Essays.Add(new Essay{ Name = model.Name, Description = model.Description, Specialization = model.Specialization,
+                Content = model.Content, CreationTime = DateTime.Now, VotersCount = 0, AverageRating = 0, UserId = user.Id });
+            await db.SaveChangesAsync();
+            return db.Essays.Where(t => t.Name == model.Name && t.Specialization == model.Specialization &&
+                t.Description == model.Description).FirstOrDefault();
+        }
+
+        public async Task CreateEssayInDb(CreateEssayViewModel model, string[] tags)
+        {
+            var user = await userManager.GetUserAsync(User);
+            Essay essay = AddNewEssayToDb(model, user).Result;
+            await AddNewTags(tags, essay);
+            await userManager.UpdateAsync(user);
         }
 
         [HttpPost]
         public async Task<IActionResult> SaveEssay(CreateEssayViewModel model)
         {
-                string[] tags = model.Tags.Split(",");
-
-
-                if (db.Essays.Any(e => e.Id == model.Id))
-                {
-                    Essay essay = db.Essays.Where(e => e.Id == model.Id).First();
-                    essay.Name = model.Name;
-                    essay.Description = model.Description;
-                    essay.Specialization = model.Specialization;
-                    essay.Content = model.Content;
-                    db.Update(essay);
-                    await db.SaveChangesAsync();
-                    var tagsToEssay = db.EssayToTags.Where(e => e.EssayId == model.Id).ToList();
-                    foreach (var temporary in tagsToEssay)
-                    {
-                        if (tags.Contains(temporary.TagId))
-                            continue;
-                        else
-                        {
-                            db.EssayToTags.Remove(temporary);
-                            var updatedTag = db.Tags.Where(e => e.TagId == temporary.TagId).First();
-                            if (updatedTag.Frequency == 1)
-                            {
-                                db.Tags.Remove(updatedTag);
-                            }
-                            else
-                            {
-                                updatedTag.Frequency--;
-                                db.Tags.Update(updatedTag);
-                            }
-                        }
-                    }
-                    await db.SaveChangesAsync();
-                    foreach (var temporary in tags)
-                    {
-                        Tag tag = db.Tags.Where(t => t.TagId == temporary).FirstOrDefault();
-                        if (tag != null)
-                        {
-                            tag.Frequency++;
-                            db.Tags.Update(tag);
-                        }
-                        else
-                        {
-                            db.Tags.Add(new Tag { TagId = temporary, Frequency = 1 });
-                        }
-                        if (db.EssayToTags.Where(e => e.TagId == temporary && e.EssayId == essay.Id).FirstOrDefault() == null)
-                            db.EssayToTags.Add(new EssayTag { TagId = temporary, EssayId = essay.Id });
-                        await db.SaveChangesAsync();
-                    }
-                    await db.SaveChangesAsync();
-                }
-                else
-                {              
-
-                    var user = await userManager.GetUserAsync(User);
-                    db.Essays.Add(new Essay
-                    {
-                        Name = model.Name,
-                        Description = model.Description,
-                        Specialization = model.Specialization,
-                        Content = model.Content,
-                        CreationTime = DateTime.Now,
-                        VotersCount = 0,
-                        AverageRating = 0,
-                        UserId = user.Id
-                    });
-                    await db.SaveChangesAsync();
-                    var essay = db.Essays.Where
-                        (
-                            t =>
-                            t.Name == model.Name &&
-                            t.Specialization == model.Specialization &&
-                            t.Description == model.Description
-                        )
-                        .FirstOrDefault();
-                    foreach (var temporary in tags)
-                    {
-                        Tag tag = db.Tags.Where(t => t.TagId == temporary).FirstOrDefault();
-                        if (tag != null)
-                        {
-                            tag.Frequency++;
-                            db.Tags.Update(tag);
-                        }
-                        else
-                        {
-                            db.Tags.Add(new Tag { TagId = temporary, Frequency = 1 });
-                        }
-                        if (db.EssayToTags.Where(e => e.TagId == temporary && e.EssayId == essay.Id).FirstOrDefault() == null)
-                            db.EssayToTags.Add(new EssayTag { TagId = temporary, EssayId = essay.Id });
-                        await db.SaveChangesAsync();
-                    }
-                    await userManager.UpdateAsync(user);
-                }
-                return View("SaveEssay");
-            
+            string[] tags = model.Tags.Split(",");
+            if (db.Essays.Any(e => e.Id == model.Id))            
+                await UpdateEssayInDb(model, tags);            
+            else            
+                await CreateEssayInDb(model, tags);            
+            return View("SaveEssay");            
         }
     }
 }

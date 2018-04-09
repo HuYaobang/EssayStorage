@@ -24,17 +24,14 @@
            
             @if (Model.IsEmailConfirmed)
             {
+                <label> is confirmed</label>
                 <input asp-for="Email" class="form-control" disabled />
-                <div class="form-group">
-                    <label>confirmed</label>
-                </div>
+               
             }
             else
             {
-                <input asp-for="Email" class="form-control"/>
-                <div class="form-group">
-                    <label> not confirmed</label>
-                </div>
+                 <label> is not confirmed</label>
+                <input asp-for="Email" class="form-control"/>                
             }
             </div>
             <div class="form-group">

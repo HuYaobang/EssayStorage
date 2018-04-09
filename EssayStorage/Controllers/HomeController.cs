@@ -48,7 +48,5 @@ namespace EssayStorage.Controllers
         {
             return db.Tags.OrderByDescending(t => t.Frequency).Skip(1).Take(20).ToList();
         }
-
-
     }
 }
