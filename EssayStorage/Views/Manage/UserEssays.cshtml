@@ -1,7 +1,7 @@
 ﻿@using EssayStorage.Models.Database
 @inject SignInManager<ApplicationUser> SignInManager
 @{
-    ViewData["Title"] = "User essays";
+    ViewData["Title"] = "Конспекты";
     ViewData.AddActivePage(ManageNavPages.UserEssays);
     var user = await SignInManager.UserManager.GetUserAsync(User);
 }
@@ -20,11 +20,11 @@
         <table id="essays-table" class="">
             <thead>
                 <tr>
-                    <th>Name</th>
-                    <th>Description</th>
-                    <th>Specialization</th>
-                    <th>Rating</th>
-                    <th>Creation time</th>
+                    <th>Название</th>
+                    <th>Описание</th>
+                    <th>Специализация</th>
+                    <th>Рейтниг</th>
+                    <th>Время создания</th>
                     <th></th>
                     <th></th>
                 </tr>
@@ -42,7 +42,7 @@
                         <center>
                             <form method="post" action="../Editor/EditEssay">
                                 <input name="essayId" value="@essay.Id" style="display:none;" />
-                                <button class="btn">Edit</button>
+                                <button class="btn">Ред.</button>
                             </form>
                         </center>
                     </td>
@@ -50,7 +50,7 @@
                         <center>
                             <form method="post" action="../Editor/DeleteEssay">
                                 <input name="essayId" value="@essay.Id" style="display:none;" />
-                                <button class="btn">Delete</button>
+                                <button class="btn">Удалить</button>
                             </form>
                         </center>
                     </td>
@@ -78,11 +78,11 @@
 else
 {
     <center>
-        <span style="display: inline-block; min-width: 251px;" class="label label-default">У вас нет доступа без подтверждения емайл</span>
+        <span style="display: inline-block; min-width: 251px;" class="label label-default">У Вас нет доступа без подтверждения e-mail</span>
         <br />
         <button id="confirmation-email-sender" style="margin-top: 3px;" class="btn btn-default">Отправить письмо подтверждения</button>
         <br />
-        <span style="display: inline-block; min-width: 251px;" class="label label-default">на емайл @user.Email</span>
+        <span style="display: inline-block; min-width: 251px;" class="label label-default">на почту @user.Email</span>
     </center>
     
     <script>

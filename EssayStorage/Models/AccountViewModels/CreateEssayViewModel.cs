@@ -8,19 +8,19 @@ namespace EssayStorage.Models.AccountViewModels
         public string Tags { get; set; }
 
         [Required]
-        [Display(Name = "Name")]
+        [Display(Name = "Название")]
         public string Name { get; set; }
 
         [Required]
-        [Display(Name = "Description")]
+        [Display(Name = "Описание")]
         public string Description { get; set; }
 
         [Required]
-        [Display(Name = "Specialization")]
+        [Display(Name = "Специализация")]
         public string Specialization { get; set; }
 
         [Required]
-        [Display(Name = "Content")]
+        [Display(Name = "Контент")]
         public string Content { get; set; }
         
         

@@ -67,6 +67,8 @@ namespace EssayStorage.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
+            if ((await _userManager.GetUserAsync(User)).IsBlocked)
+                return View("UserIsBlocked");
             var user = await GetCurrentUser();
             var model = CreateIndexViewModelByUser(user);
             return View(model);
@@ -76,6 +78,8 @@ namespace EssayStorage.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Index(IndexViewModel model)
         {
+            if ((await _userManager.GetUserAsync(User)).IsBlocked)
+                return View("UserIsBlocked");
             if (!ModelState.IsValid)
                 return View(model);
             var result = await ChangeEmailAndNameIfNeed(model);
@@ -85,6 +89,8 @@ namespace EssayStorage.Controllers
         [HttpGet]
         public async Task<IActionResult> ChangePassword()
         {
+            if ((await _userManager.GetUserAsync(User)).IsBlocked)
+                return View("UserIsBlocked");
             var user = await GetCurrentUser();
             var hasPassword = await _userManager.HasPasswordAsync(user);
             if (!hasPassword) return RedirectToAction(nameof(SetPassword));
@@ -96,6 +102,8 @@ namespace EssayStorage.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
         {
+            if ((await _userManager.GetUserAsync(User)).IsBlocked)
+                return View("UserIsBlocked");
             if (!ModelState.IsValid)
                 return View(model);
             var user = await GetCurrentUser();
@@ -183,6 +191,8 @@ namespace EssayStorage.Controllers
         [HttpGet]
         public async Task<IActionResult> UserEssays()
         {
+            if ((await _userManager.GetUserAsync(User)).IsBlocked)
+                return View("UserIsBlocked");
             var user = await GetCurrentUser();
             List<Essay> essays = _db.Essays.Where((e) => e.UserId == user.Id).ToList();
             ViewData.Add("essays", essays);
